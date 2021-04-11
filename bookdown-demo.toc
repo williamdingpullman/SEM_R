@@ -1,0 +1,3 @@
+\contentsline {chapter}{\numberline {1}SEM and R}{5}{chapter.1}% 
+\contentsline {chapter}{\numberline {2}Introduction}{7}{chapter.2}% 
+\contentsline {chapter}{\numberline {3}SEM}{9}{chapter.3}% 
