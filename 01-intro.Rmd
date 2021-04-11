@@ -1,3 +1,54 @@
 # Introduction {#intro}
 
-XX
+The following R codes are from UCLA website "https://stats.idre.ucla.edu/r/seminars/rsem/" and I do not own the copyright of the R code. I wrote this R Markdown file for my own study purpose. 
+
+**Given this consideration, please do NOT distribute this page in any way.**
+
+## Definitions (Basic Concepts)
+
+### Observed variable
+
+Observed variable: A variable that exists in the data (a.k.a item or manifest variable)
+
+### Latent variable
+
+Latent variable: A variable that is constructed and does not exist in the data.
+
+### Exogenous variable
+
+Exogenous variable: An independent variable either observed (X) or latent ($\xi$) that explains an engogenous variable.
+
+## Read the data into the R Studio environment.
+
+It also calcuates the covariance matrix among all the variables in the data.
+
+```{R}
+
+dat <- read.csv("https://stats.idre.ucla.edu/wp-content/uploads/2021/02/worland5.csv")
+cov(dat)
+
+```
+
+In the following, we conduct a simple linear regression.
+$$sample \ variance-covariance \ matrix \hat{\sum} = \mathbf{S} $$
+
+```{R}
+
+m1a <- lm(read ~ motiv, data=dat)
+(fit1a <-summary(m1a))
+
+```
+
+```{R}
+library(lavaan)
+#simple regression using lavaan 
+m1b <-   '
+  # regressions
+    read ~ 1 + motiv
+  # variance (optional)
+    motiv ~~ motiv
+'
+
+fit1b <- sem(m1b, data=dat)
+summary(fit1b)
+```

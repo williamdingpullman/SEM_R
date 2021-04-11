@@ -30,6 +30,46 @@
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{natbib}
 \bibliographystyle{apalike}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 \usepackage{graphicx,grffile}
 \makeatletter
@@ -110,7 +150,135 @@ This is the starting point.
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
-XX
+The following R codes are from UCLA website ``\url{https://stats.idre.ucla.edu/r/seminars/rsem/}'' and I do not own the copyright of the R code. I wrote this R Markdown file for my own study purpose.
+
+\textbf{Given this consideration, please do NOT distribute this page in any way.}
+
+\hypertarget{definitions-basic-concepts}{%
+\section{Definitions (Basic Concepts)}\label{definitions-basic-concepts}}
+
+\hypertarget{observed-variable}{%
+\subsection{Observed variable}\label{observed-variable}}
+
+Observed variable: A variable that exists in the data (a.k.a item or manifest variable)
+
+\hypertarget{latent-variable}{%
+\subsection{Latent variable}\label{latent-variable}}
+
+Latent variable: A variable that is constructed and does not exist in the data.
+
+\hypertarget{exogenous-variable}{%
+\subsection{Exogenous variable}\label{exogenous-variable}}
+
+Exogenous variable: An independent variable either observed (X) or latent (\(\xi\)) that explains an engogenous variable.
+
+\hypertarget{read-the-data-into-the-r-studio-environment.}{%
+\section{Read the data into the R Studio environment.}\label{read-the-data-into-the-r-studio-environment.}}
+
+It also calcuates the covariance matrix among all the variables in the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"https://stats.idre.ucla.edu/wp-content/uploads/2021/02/worland5.csv"}\NormalTok{)}
+\KeywordTok{cov}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        motiv harm stabi ppsych ses verbal read arith spell
+## motiv    100   77    59    -25  25     32   53    60    59
+## harm      77  100    58    -25  26     25   42    44    45
+## stabi     59   58   100    -16  18     27   36    38    38
+## ppsych   -25  -25   -16    100 -42    -40  -39   -24   -31
+## ses       25   26    18    -42 100     40   43    37    33
+## verbal    32   25    27    -40  40    100   56    49    48
+## read      53   42    36    -39  43     56  100    73    87
+## arith     60   44    38    -24  37     49   73   100    72
+## spell     59   45    38    -31  33     48   87    72   100
+\end{verbatim}
+
+In the following, we conduct a simple linear regression.
+\[sample \ variance-covariance \ matrix \hat{\sum} = \mathbf{S} \]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m1a <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(read }\OperatorTok{~}\StringTok{ }\NormalTok{motiv, }\DataTypeTok{data=}\NormalTok{dat)}
+\NormalTok{(fit1a <-}\KeywordTok{summary}\NormalTok{(m1a))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = read ~ motiv, data = dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -26.0995  -6.1109   0.2342   5.2237  24.0183 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -1.232e-07  3.796e-01    0.00        1    
+## motiv        5.300e-01  3.800e-02   13.95   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 8.488 on 498 degrees of freedom
+## Multiple R-squared:  0.2809, Adjusted R-squared:  0.2795 
+## F-statistic: 194.5 on 1 and 498 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(lavaan)}
+\CommentTok{#simple regression using lavaan }
+\NormalTok{m1b <-}\StringTok{   '}
+\StringTok{  # regressions}
+\StringTok{    read ~ 1 + motiv}
+\StringTok{  # variance (optional)}
+\StringTok{    motiv ~~ motiv}
+\StringTok{'}
+
+\NormalTok{fit1b <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(m1b, }\DataTypeTok{data=}\NormalTok{dat)}
+\KeywordTok{summary}\NormalTok{(fit1b)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-8 ended normally after 14 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         5
+##                                                       
+##   Number of observations                           500
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   read ~                                              
+##     motiv             0.530    0.038   13.975    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .read             -0.000    0.379   -0.000    1.000
+##     motiv             0.000    0.447    0.000    1.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##     motiv            99.800    6.312   15.811    0.000
+##    .read             71.766    4.539   15.811    0.000
+\end{verbatim}
 
 \hypertarget{sem}{%
 \chapter{SEM}\label{sem}}

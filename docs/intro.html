@@ -52,6 +52,68 @@
 
 
 
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -70,7 +132,14 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> SEM and R</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#definitions-basic-concepts"><i class="fa fa-check"></i><b>2.1</b> Definitions (Basic Concepts)</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="intro.html"><a href="intro.html#observed-variable"><i class="fa fa-check"></i><b>2.1.1</b> Observed variable</a></li>
+<li class="chapter" data-level="2.1.2" data-path="intro.html"><a href="intro.html#latent-variable"><i class="fa fa-check"></i><b>2.1.2</b> Latent variable</a></li>
+<li class="chapter" data-level="2.1.3" data-path="intro.html"><a href="intro.html#exogenous-variable"><i class="fa fa-check"></i><b>2.1.3</b> Exogenous variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#read-the-data-into-the-r-studio-environment."><i class="fa fa-check"></i><b>2.2</b> Read the data into the R Studio environment.</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="sem.html"><a href="sem.html"><i class="fa fa-check"></i><b>3</b> SEM</a></li>
 <li class="divider"></li>
 <li><a href="https://williamdingpullman.github.io/" target="blank">Bill's State Notes</a></li>
@@ -94,8 +163,109 @@
             <section class="normal" id="section-">
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Introduction</h1>
-<p>XX</p>
+<p>The following R codes are from UCLA website “<a href="https://stats.idre.ucla.edu/r/seminars/rsem/" class="uri">https://stats.idre.ucla.edu/r/seminars/rsem/</a>” and I do not own the copyright of the R code. I wrote this R Markdown file for my own study purpose.</p>
+<p><strong>Given this consideration, please do NOT distribute this page in any way.</strong></p>
+<div id="definitions-basic-concepts" class="section level2">
+<h2><span class="header-section-number">2.1</span> Definitions (Basic Concepts)</h2>
+<div id="observed-variable" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Observed variable</h3>
+<p>Observed variable: A variable that exists in the data (a.k.a item or manifest variable)</p>
+</div>
+<div id="latent-variable" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Latent variable</h3>
+<p>Latent variable: A variable that is constructed and does not exist in the data.</p>
+</div>
+<div id="exogenous-variable" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Exogenous variable</h3>
+<p>Exogenous variable: An independent variable either observed (X) or latent (<span class="math inline">\(\xi\)</span>) that explains an engogenous variable.</p>
+</div>
+</div>
+<div id="read-the-data-into-the-r-studio-environment." class="section level2">
+<h2><span class="header-section-number">2.2</span> Read the data into the R Studio environment.</h2>
+<p>It also calcuates the covariance matrix among all the variables in the data.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://stats.idre.ucla.edu/wp-content/uploads/2021/02/worland5.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">cov</span>(dat)</a></code></pre></div>
+<pre><code>##        motiv harm stabi ppsych ses verbal read arith spell
+## motiv    100   77    59    -25  25     32   53    60    59
+## harm      77  100    58    -25  26     25   42    44    45
+## stabi     59   58   100    -16  18     27   36    38    38
+## ppsych   -25  -25   -16    100 -42    -40  -39   -24   -31
+## ses       25   26    18    -42 100     40   43    37    33
+## verbal    32   25    27    -40  40    100   56    49    48
+## read      53   42    36    -39  43     56  100    73    87
+## arith     60   44    38    -24  37     49   73   100    72
+## spell     59   45    38    -31  33     48   87    72   100</code></pre>
+<p>In the following, we conduct a simple linear regression.
+<span class="math display">\[sample \ variance-covariance \ matrix \hat{\sum} = \mathbf{S} \]</span></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">m1a &lt;-<span class="st"> </span><span class="kw">lm</span>(read <span class="op">~</span><span class="st"> </span>motiv, <span class="dt">data=</span>dat)</a>
+<a class="sourceLine" id="cb3-2" title="2">(fit1a &lt;-<span class="kw">summary</span>(m1a))</a></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = read ~ motiv, data = dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -26.0995  -6.1109   0.2342   5.2237  24.0183 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.232e-07  3.796e-01    0.00        1    
+## motiv        5.300e-01  3.800e-02   13.95   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 8.488 on 498 degrees of freedom
+## Multiple R-squared:  0.2809, Adjusted R-squared:  0.2795 
+## F-statistic: 194.5 on 1 and 498 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">library</span>(lavaan)</a></code></pre></div>
+<pre><code>## Warning: package &#39;lavaan&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## This is lavaan 0.6-8
+## lavaan is FREE software! Please report any bugs.</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">#simple regression using lavaan </span></a>
+<a class="sourceLine" id="cb8-2" title="2">m1b &lt;-<span class="st">   &#39;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="st">  # regressions</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="st">    read ~ 1 + motiv</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="st">  # variance (optional)</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="st">    motiv ~~ motiv</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="st">&#39;</span></a>
+<a class="sourceLine" id="cb8-8" title="8"></a>
+<a class="sourceLine" id="cb8-9" title="9">fit1b &lt;-<span class="st"> </span><span class="kw">sem</span>(m1b, <span class="dt">data=</span>dat)</a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="kw">summary</span>(fit1b)</a></code></pre></div>
+<pre><code>## lavaan 0.6-8 ended normally after 14 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         5
+##                                                       
+##   Number of observations                           500
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   read ~                                              
+##     motiv             0.530    0.038   13.975    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .read             -0.000    0.379   -0.000    1.000
+##     motiv             0.000    0.447    0.000    1.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##     motiv            99.800    6.312   15.811    0.000
+##    .read             71.766    4.539   15.811    0.000</code></pre>
 
+</div>
 </div>
             </section>
 
@@ -153,6 +323,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
