@@ -1,6 +1,6 @@
 # Introduction {#intro}
 
-The following R codes are from UCLA website "https://stats.idre.ucla.edu/r/seminars/rsem/" and I do not own the copyright of the R code. I wrote this R Markdown file for my own study purpose. 
+The following R codes and texts are from UCLA website "https://stats.idre.ucla.edu/r/seminars/rsem/" and I do not own the copyright of the R codes or texts. I wrote this R Markdown file for my own study purpose. 
 
 **Given this consideration, please do NOT distribute this page in any way.**
 
@@ -18,6 +18,77 @@ Latent variable: A variable that is constructed and does not exist in the data.
 
 Exogenous variable: An independent variable either observed (X) or latent ($\xi$) that explains an engogenous variable.
 
+### Endogenous variable
+
+Endogenous variable: A dependent variable, either observed (Y) or latent ($\eta$) that has a causal path leading to it.
+
+### Measurement model 
+
+Measurement model: A model that links obseved variables with latent variables.
+
+### Indicator (in a measurement model)
+
+Indicator: An observed variable in a measurement model (can be exogenous or endogenous).
+
+### Factor 
+
+Factor: A latent variable defined by its indicators (can be exogenous or endogeous).
+
+### Loading
+
+Loading: A path between an indicator and a factor.
+
+### Structural model
+
+Structural model: A model that specifies casual relationships among exogeous variables to endogeous variables (can be observed or latent).
+
+### Regerssion path
+
+Regression path: A path between exogeous and endogeous variables (can be observed or latent).
+
+## The path diagram
+
+Circles represent latent variables. Squares represent observed indicators. Triangles represent intercepts or means. One way arrows represent paths. Two-way arrows represent either variances or covariances. 
+
+## Lavaan syntax
+
+$\sim$ **predict**: used for regression of observed outcome to observed predictors (e.g., $y \sim x$).
+
+$= \sim$ **indicator**: used for latent variable to observed indicator in factor analysis measurement models (e.g., $f= \sim q+r+s$).
+
+$\sim \sim$ **covariance**: (e.g., $x \sim \sim x$).
+
+$\sim 1$ **intercept or mean**: (e.g., $x \sim 1$ estimates the mean of variable $x$).
+
+$1*$ **fixes parameter or loading to one**: (e.g., $f =\sim 1*q$).
+
+$NA *$ **free parameter or loading**: used to override default marker method (e.g., $f=\sim NA * q$).
+
+$a*$ **lables the parameter 'a'**: used for model constraints (e.g., $f=\sim a*q$).
+
+
+## Regression and path analysis
+
+$$y_{1}=b_{0}+b_{1}x_{1}+\epsilon_{1}$$
+$$y_{1}=\alpha+\gamma_{1} x_{1}+\zeta_{1}$$
+
+$x_{1}$ single exogenous variable
+
+$y_{1}$ single endogenous variable
+
+$b_{0}$, $\alpha_{1}$ intercept of $y_{1}$ (alpha)
+
+$b_{1}$, $\gamma_{1}$ regression coefficient (gamma)
+
+$\epsilon_{1}$, $\zeta_{1}$ residual of $y_{1}$ (epsilon, zeta)
+
+$\phi$ variance or covariance of the exogenous variable (phi)
+
+$\psi$ residual variance or covariance of the endogenous variable (psi)
+
+
+# Real data example (Simple linear regression)
+
 ## Read the data into the R Studio environment.
 
 It also calcuates the covariance matrix among all the variables in the data.
@@ -27,6 +98,7 @@ It also calcuates the covariance matrix among all the variables in the data.
 dat <- read.csv("https://stats.idre.ucla.edu/wp-content/uploads/2021/02/worland5.csv")
 cov(dat)
 
+var(dat$motiv)
 ```
 
 In the following, we conduct a simple linear regression.
@@ -44,11 +116,24 @@ library(lavaan)
 #simple regression using lavaan 
 m1b <-   '
   # regressions
-    read ~ 1 + motiv
+    read ~ 1+ motiv
   # variance (optional)
     motiv ~~ motiv
 '
 
 fit1b <- sem(m1b, data=dat)
 summary(fit1b)
+```
+
+# Real data example (Multiple linear regression)
+
+```{R}
+m2 <- '
+  # regressions
+    read ~ 1 + ppsych + motiv
+ # covariance
+    ppsych ~~ motiv
+'
+fit2 <- sem(m2, data=dat)
+summary(fit2)
 ```

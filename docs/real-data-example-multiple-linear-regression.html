@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Introduction | SEM and R</title>
+  <title>Chapter 4 Real data example (Multiple linear regression) | SEM and R</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Introduction | SEM and R" />
+  <meta property="og:title" content="Chapter 4 Real data example (Multiple linear regression) | SEM and R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Introduction | SEM and R" />
+  <meta name="twitter:title" content="Chapter 4 Real data example (Multiple linear regression) | SEM and R" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="real-data-example-simple-linear-regression.html"/>
+<link rel="prev" href="real-data-example-simple-linear-regression.html"/>
+<link rel="next" href="sem.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -174,87 +174,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Introduction</h1>
-<p>The following R codes and texts are from UCLA website “<a href="https://stats.idre.ucla.edu/r/seminars/rsem/" class="uri">https://stats.idre.ucla.edu/r/seminars/rsem/</a>” and I do not own the copyright of the R codes or texts. I wrote this R Markdown file for my own study purpose.</p>
-<p><strong>Given this consideration, please do NOT distribute this page in any way.</strong></p>
-<div id="definitions-basic-concepts" class="section level2">
-<h2><span class="header-section-number">2.1</span> Definitions (Basic Concepts)</h2>
-<div id="observed-variable" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> Observed variable</h3>
-<p>Observed variable: A variable that exists in the data (a.k.a item or manifest variable)</p>
-</div>
-<div id="latent-variable" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> Latent variable</h3>
-<p>Latent variable: A variable that is constructed and does not exist in the data.</p>
-</div>
-<div id="exogenous-variable" class="section level3">
-<h3><span class="header-section-number">2.1.3</span> Exogenous variable</h3>
-<p>Exogenous variable: An independent variable either observed (X) or latent (<span class="math inline">\(\xi\)</span>) that explains an engogenous variable.</p>
-</div>
-<div id="endogenous-variable" class="section level3">
-<h3><span class="header-section-number">2.1.4</span> Endogenous variable</h3>
-<p>Endogenous variable: A dependent variable, either observed (Y) or latent (<span class="math inline">\(\eta\)</span>) that has a causal path leading to it.</p>
-</div>
-<div id="measurement-model" class="section level3">
-<h3><span class="header-section-number">2.1.5</span> Measurement model</h3>
-<p>Measurement model: A model that links obseved variables with latent variables.</p>
-</div>
-<div id="indicator-in-a-measurement-model" class="section level3">
-<h3><span class="header-section-number">2.1.6</span> Indicator (in a measurement model)</h3>
-<p>Indicator: An observed variable in a measurement model (can be exogenous or endogenous).</p>
-</div>
-<div id="factor" class="section level3">
-<h3><span class="header-section-number">2.1.7</span> Factor</h3>
-<p>Factor: A latent variable defined by its indicators (can be exogenous or endogeous).</p>
-</div>
-<div id="loading" class="section level3">
-<h3><span class="header-section-number">2.1.8</span> Loading</h3>
-<p>Loading: A path between an indicator and a factor.</p>
-</div>
-<div id="structural-model" class="section level3">
-<h3><span class="header-section-number">2.1.9</span> Structural model</h3>
-<p>Structural model: A model that specifies casual relationships among exogeous variables to endogeous variables (can be observed or latent).</p>
-</div>
-<div id="regerssion-path" class="section level3">
-<h3><span class="header-section-number">2.1.10</span> Regerssion path</h3>
-<p>Regression path: A path between exogeous and endogeous variables (can be observed or latent).</p>
-</div>
-</div>
-<div id="the-path-diagram" class="section level2">
-<h2><span class="header-section-number">2.2</span> The path diagram</h2>
-<p>Circles represent latent variables. Squares represent observed indicators. Triangles represent intercepts or means. One way arrows represent paths. Two-way arrows represent either variances or covariances.</p>
-</div>
-<div id="lavaan-syntax" class="section level2">
-<h2><span class="header-section-number">2.3</span> Lavaan syntax</h2>
-<p><span class="math inline">\(\sim\)</span> <strong>predict</strong>: used for regression of observed outcome to observed predictors (e.g., <span class="math inline">\(y \sim x\)</span>).</p>
-<p><span class="math inline">\(= \sim\)</span> <strong>indicator</strong>: used for latent variable to observed indicator in factor analysis measurement models (e.g., <span class="math inline">\(f= \sim q+r+s\)</span>).</p>
-<p><span class="math inline">\(\sim \sim\)</span> <strong>covariance</strong>: (e.g., <span class="math inline">\(x \sim \sim x\)</span>).</p>
-<p><span class="math inline">\(\sim 1\)</span> <strong>intercept or mean</strong>: (e.g., <span class="math inline">\(x \sim 1\)</span> estimates the mean of variable <span class="math inline">\(x\)</span>).</p>
-<p><span class="math inline">\(1*\)</span> <strong>fixes parameter or loading to one</strong>: (e.g., <span class="math inline">\(f =\sim 1*q\)</span>).</p>
-<p><span class="math inline">\(NA *\)</span> <strong>free parameter or loading</strong>: used to override default marker method (e.g., <span class="math inline">\(f=\sim NA * q\)</span>).</p>
-<p><span class="math inline">\(a*\)</span> <strong>lables the parameter ‘a’</strong>: used for model constraints (e.g., <span class="math inline">\(f=\sim a*q\)</span>).</p>
-</div>
-<div id="regression-and-path-analysis" class="section level2">
-<h2><span class="header-section-number">2.4</span> Regression and path analysis</h2>
-<p><span class="math display">\[y_{1}=b_{0}+b_{1}x_{1}+\epsilon_{1}\]</span>
-<span class="math display">\[y_{1}=\alpha+\gamma_{1} x_{1}+\zeta_{1}\]</span></p>
-<p><span class="math inline">\(x_{1}\)</span> single exogenous variable</p>
-<p><span class="math inline">\(y_{1}\)</span> single endogenous variable</p>
-<p><span class="math inline">\(b_{0}\)</span>, <span class="math inline">\(\alpha_{1}\)</span> intercept of <span class="math inline">\(y_{1}\)</span> (alpha)</p>
-<p><span class="math inline">\(b_{1}\)</span>, <span class="math inline">\(\gamma_{1}\)</span> regression coefficient (gamma)</p>
-<p><span class="math inline">\(\epsilon_{1}\)</span>, <span class="math inline">\(\zeta_{1}\)</span> residual of <span class="math inline">\(y_{1}\)</span> (epsilon, zeta)</p>
-<p><span class="math inline">\(\phi\)</span> variance or covariance of the exogenous variable (phi)</p>
-<p><span class="math inline">\(\psi\)</span> residual variance or covariance of the endogenous variable (psi)</p>
-</div>
+<div id="real-data-example-multiple-linear-regression" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Real data example (Multiple linear regression)</h1>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">m2 &lt;-<span class="st"> &#39;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="st">  # regressions</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="st">    read ~ 1 + ppsych + motiv</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="st"> # covariance</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="st">    ppsych ~~ motiv</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="st">&#39;</span></a>
+<a class="sourceLine" id="cb12-7" title="7">fit2 &lt;-<span class="st"> </span><span class="kw">sem</span>(m2, <span class="dt">data=</span>dat)</a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="kw">summary</span>(fit2)</a></code></pre></div>
+<pre><code>## lavaan 0.6-8 ended normally after 34 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         9
+##                                                       
+##   Number of observations                           500
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   read ~                                              
+##     ppsych           -0.275    0.037   -7.385    0.000
+##     motiv             0.461    0.037   12.404    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   ppsych ~~                                           
+##     motiv           -24.950    4.601   -5.423    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .read              0.000    0.360    0.000    1.000
+##     ppsych           -0.000    0.447   -0.000    1.000
+##     motiv             0.000    0.447    0.000    1.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .read             64.708    4.092   15.811    0.000
+##     ppsych           99.800    6.312   15.811    0.000
+##     motiv            99.800    6.312   15.811    0.000</code></pre>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="real-data-example-simple-linear-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="real-data-example-simple-linear-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sem.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

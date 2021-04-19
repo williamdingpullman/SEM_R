@@ -1,5 +1,10 @@
 \BOOKMARK [0][-]{chapter.1}{SEM\040and\040R}{}% 1
 \BOOKMARK [0][-]{chapter.2}{Introduction}{}% 2
 \BOOKMARK [1][-]{section.2.1}{Definitions\040\(Basic\040Concepts\)}{chapter.2}% 3
-\BOOKMARK [1][-]{section.2.2}{Read\040the\040data\040into\040the\040R\040Studio\040environment.}{chapter.2}% 4
-\BOOKMARK [0][-]{chapter.3}{SEM}{}% 5
+\BOOKMARK [1][-]{section.2.2}{The\040path\040diagram}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Lavaan\040syntax}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.4}{Regression\040and\040path\040analysis}{chapter.2}% 6
+\BOOKMARK [0][-]{chapter.3}{Real\040data\040example\040\(Simple\040linear\040regression\)}{}% 7
+\BOOKMARK [1][-]{section.3.1}{Read\040the\040data\040into\040the\040R\040Studio\040environment.}{chapter.3}% 8
+\BOOKMARK [0][-]{chapter.4}{Real\040data\040example\040\(Multiple\040linear\040regression\)}{}% 9
+\BOOKMARK [0][-]{chapter.5}{SEM}{}% 10

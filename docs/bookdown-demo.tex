@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2021-04-11}
+    \date{2021-04-19}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -150,7 +150,7 @@ This is the starting point.
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
-The following R codes are from UCLA website ``\url{https://stats.idre.ucla.edu/r/seminars/rsem/}'' and I do not own the copyright of the R code. I wrote this R Markdown file for my own study purpose.
+The following R codes and texts are from UCLA website ``\url{https://stats.idre.ucla.edu/r/seminars/rsem/}'' and I do not own the copyright of the R codes or texts. I wrote this R Markdown file for my own study purpose.
 
 \textbf{Given this consideration, please do NOT distribute this page in any way.}
 
@@ -171,6 +171,86 @@ Latent variable: A variable that is constructed and does not exist in the data.
 \subsection{Exogenous variable}\label{exogenous-variable}}
 
 Exogenous variable: An independent variable either observed (X) or latent (\(\xi\)) that explains an engogenous variable.
+
+\hypertarget{endogenous-variable}{%
+\subsection{Endogenous variable}\label{endogenous-variable}}
+
+Endogenous variable: A dependent variable, either observed (Y) or latent (\(\eta\)) that has a causal path leading to it.
+
+\hypertarget{measurement-model}{%
+\subsection{Measurement model}\label{measurement-model}}
+
+Measurement model: A model that links obseved variables with latent variables.
+
+\hypertarget{indicator-in-a-measurement-model}{%
+\subsection{Indicator (in a measurement model)}\label{indicator-in-a-measurement-model}}
+
+Indicator: An observed variable in a measurement model (can be exogenous or endogenous).
+
+\hypertarget{factor}{%
+\subsection{Factor}\label{factor}}
+
+Factor: A latent variable defined by its indicators (can be exogenous or endogeous).
+
+\hypertarget{loading}{%
+\subsection{Loading}\label{loading}}
+
+Loading: A path between an indicator and a factor.
+
+\hypertarget{structural-model}{%
+\subsection{Structural model}\label{structural-model}}
+
+Structural model: A model that specifies casual relationships among exogeous variables to endogeous variables (can be observed or latent).
+
+\hypertarget{regerssion-path}{%
+\subsection{Regerssion path}\label{regerssion-path}}
+
+Regression path: A path between exogeous and endogeous variables (can be observed or latent).
+
+\hypertarget{the-path-diagram}{%
+\section{The path diagram}\label{the-path-diagram}}
+
+Circles represent latent variables. Squares represent observed indicators. Triangles represent intercepts or means. One way arrows represent paths. Two-way arrows represent either variances or covariances.
+
+\hypertarget{lavaan-syntax}{%
+\section{Lavaan syntax}\label{lavaan-syntax}}
+
+\(\sim\) \textbf{predict}: used for regression of observed outcome to observed predictors (e.g., \(y \sim x\)).
+
+\(= \sim\) \textbf{indicator}: used for latent variable to observed indicator in factor analysis measurement models (e.g., \(f= \sim q+r+s\)).
+
+\(\sim \sim\) \textbf{covariance}: (e.g., \(x \sim \sim x\)).
+
+\(\sim 1\) \textbf{intercept or mean}: (e.g., \(x \sim 1\) estimates the mean of variable \(x\)).
+
+\(1*\) \textbf{fixes parameter or loading to one}: (e.g., \(f =\sim 1*q\)).
+
+\(NA *\) \textbf{free parameter or loading}: used to override default marker method (e.g., \(f=\sim NA * q\)).
+
+\(a*\) \textbf{lables the parameter `a'}: used for model constraints (e.g., \(f=\sim a*q\)).
+
+\hypertarget{regression-and-path-analysis}{%
+\section{Regression and path analysis}\label{regression-and-path-analysis}}
+
+\[y_{1}=b_{0}+b_{1}x_{1}+\epsilon_{1}\]
+\[y_{1}=\alpha+\gamma_{1} x_{1}+\zeta_{1}\]
+
+\(x_{1}\) single exogenous variable
+
+\(y_{1}\) single endogenous variable
+
+\(b_{0}\), \(\alpha_{1}\) intercept of \(y_{1}\) (alpha)
+
+\(b_{1}\), \(\gamma_{1}\) regression coefficient (gamma)
+
+\(\epsilon_{1}\), \(\zeta_{1}\) residual of \(y_{1}\) (epsilon, zeta)
+
+\(\phi\) variance or covariance of the exogenous variable (phi)
+
+\(\psi\) residual variance or covariance of the endogenous variable (psi)
+
+\hypertarget{real-data-example-simple-linear-regression}{%
+\chapter{Real data example (Simple linear regression)}\label{real-data-example-simple-linear-regression}}
 
 \hypertarget{read-the-data-into-the-r-studio-environment.}{%
 \section{Read the data into the R Studio environment.}\label{read-the-data-into-the-r-studio-environment.}}
@@ -195,6 +275,16 @@ It also calcuates the covariance matrix among all the variables in the data.
 ## read      53   42    36    -39  43     56  100    73    87
 ## arith     60   44    38    -24  37     49   73   100    72
 ## spell     59   45    38    -31  33     48   87    72   100
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{var}\NormalTok{(dat}\OperatorTok{$}\NormalTok{motiv)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 100
 \end{verbatim}
 
 In the following, we conduct a simple linear regression.
@@ -234,7 +324,7 @@ In the following, we conduct a simple linear regression.
 \CommentTok{#simple regression using lavaan }
 \NormalTok{m1b <-}\StringTok{   '}
 \StringTok{  # regressions}
-\StringTok{    read ~ 1 + motiv}
+\StringTok{    read ~ 1+ motiv}
 \StringTok{  # variance (optional)}
 \StringTok{    motiv ~~ motiv}
 \StringTok{'}
@@ -278,6 +368,66 @@ In the following, we conduct a simple linear regression.
 ##                    Estimate  Std.Err  z-value  P(>|z|)
 ##     motiv            99.800    6.312   15.811    0.000
 ##    .read             71.766    4.539   15.811    0.000
+\end{verbatim}
+
+\hypertarget{real-data-example-multiple-linear-regression}{%
+\chapter{Real data example (Multiple linear regression)}\label{real-data-example-multiple-linear-regression}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m2 <-}\StringTok{ '}
+\StringTok{  # regressions}
+\StringTok{    read ~ 1 + ppsych + motiv}
+\StringTok{ # covariance}
+\StringTok{    ppsych ~~ motiv}
+\StringTok{'}
+\NormalTok{fit2 <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(m2, }\DataTypeTok{data=}\NormalTok{dat)}
+\KeywordTok{summary}\NormalTok{(fit2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-8 ended normally after 34 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         9
+##                                                       
+##   Number of observations                           500
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   read ~                                              
+##     ppsych           -0.275    0.037   -7.385    0.000
+##     motiv             0.461    0.037   12.404    0.000
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##   ppsych ~~                                           
+##     motiv           -24.950    4.601   -5.423    0.000
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .read              0.000    0.360    0.000    1.000
+##     ppsych           -0.000    0.447   -0.000    1.000
+##     motiv             0.000    0.447    0.000    1.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .read             64.708    4.092   15.811    0.000
+##     ppsych           99.800    6.312   15.811    0.000
+##     motiv            99.800    6.312   15.811    0.000
 \end{verbatim}
 
 \hypertarget{sem}{%
