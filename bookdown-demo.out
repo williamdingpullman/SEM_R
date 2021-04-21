@@ -8,3 +8,8 @@
 \BOOKMARK [1][-]{section.3.1}{Read\040the\040data\040into\040the\040R\040Studio\040environment.}{chapter.3}% 8
 \BOOKMARK [0][-]{chapter.4}{Real\040data\040example\040\(Multiple\040linear\040regression\)}{}% 9
 \BOOKMARK [0][-]{chapter.5}{Bootstrapping}{}% 10
+\BOOKMARK [1][-]{section.5.1}{Introduction}{chapter.5}% 11
+\BOOKMARK [1][-]{section.5.2}{Normal\040distribution,\040SD,\040SE}{chapter.5}% 12
+\BOOKMARK [1][-]{section.5.3}{Sample\040function}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.4}{Proportion}{chapter.5}% 14
+\BOOKMARK [1][-]{section.5.5}{boot\040package}{chapter.5}% 15

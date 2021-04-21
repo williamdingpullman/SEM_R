@@ -153,7 +153,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1" data-path="real-data-example-simple-linear-regression.html"><a href="real-data-example-simple-linear-regression.html#read-the-data-into-the-r-studio-environment."><i class="fa fa-check"></i><b>3.1</b> Read the data into the R Studio environment.</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="real-data-example-multiple-linear-regression.html"><a href="real-data-example-multiple-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Real data example (Multiple linear regression)</a></li>
-<li class="chapter" data-level="5" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>5</b> Bootstrapping</a></li>
+<li class="chapter" data-level="5" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>5</b> Bootstrapping</a><ul>
+<li class="chapter" data-level="5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#normal-distribution-sd-se"><i class="fa fa-check"></i><b>5.2</b> Normal distribution, SD, SE</a></li>
+<li class="chapter" data-level="5.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-function"><i class="fa fa-check"></i><b>5.3</b> Sample function</a></li>
+<li class="chapter" data-level="5.4" data-path="bootstrapping.html"><a href="bootstrapping.html#proportion"><i class="fa fa-check"></i><b>5.4</b> Proportion</a></li>
+<li class="chapter" data-level="5.5" data-path="bootstrapping.html"><a href="bootstrapping.html#boot-package"><i class="fa fa-check"></i><b>5.5</b> boot package</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://williamdingpullman.github.io/" target="blank">Bill's State Notes</a></li>
 
@@ -176,6 +182,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="bootstrapping" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Bootstrapping</h1>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">5.1</span> Introduction</h2>
 <p>The following note is made when I was studying Bret Larget’s note posted online.
 <a href="http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf" class="uri">http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf</a></p>
 <p>He used the data from LOck5data as an example.</p>
@@ -192,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb16-2" title="2"></a>
 <a class="sourceLine" id="cb16-3" title="3">time.mean</a></code></pre></div>
 <pre><code>## [1] 29.11</code></pre>
-<p>Now, he sampled a (b times n) table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is a (1000 times 500) table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of (1000 times 500) from those 500 data points. After that, the matrix function put such (1000 times 500) data points into a matrix of (1000 times 500).</p>
+<p>Now, he sampled a (b X n) table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is a (1000 times 500) table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of (1000 times 500) from those 500 data points. After that, the matrix function put such (1000 times 500) data points into a matrix of (1000 times 500).</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">B =<span class="st"> </span><span class="dv">1000</span></a>
 <a class="sourceLine" id="cb18-2" title="2">n =<span class="st"> </span><span class="kw">nrow</span>(CommuteAtlanta)</a>
 <a class="sourceLine" id="cb18-3" title="3">boot.samples =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(CommuteAtlanta<span class="op">$</span>Time, <span class="dt">size =</span> B <span class="op">*</span><span class="st"> </span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
@@ -209,12 +217,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">time.se =<span class="st"> </span><span class="kw">sd</span>(boot.statistics)</a>
 <a class="sourceLine" id="cb24-2" title="2">time.se</a></code></pre></div>
-<pre><code>## [1] 0.9354676</code></pre>
+<pre><code>## [1] 0.9013548</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">me =<span class="st"> </span><span class="kw">ceiling</span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>time.se)<span class="op">/</span><span class="dv">10</span></a>
 <a class="sourceLine" id="cb26-2" title="2">me</a></code></pre></div>
 <pre><code>## [1] 1.9</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">round</span>(time.mean, <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span>me</a></code></pre></div>
 <pre><code>## [1] 27.2 31.0</code></pre>
+</div>
+<div id="normal-distribution-sd-se" class="section level2">
+<h2><span class="header-section-number">5.2</span> Normal distribution, SD, SE</h2>
 <p>Note, if we do not use bootstraping, we can use the standard CI formula (<a href="https://www.mathsisfun.com/data/confidence-interval.html" class="uri">https://www.mathsisfun.com/data/confidence-interval.html</a>). This formula assumes normal distribution. As we can see, this is close to the result based on the bootstrapping method.</p>
 <p><span class="math display">\[\overline{X} \pm Z \frac{S}{\sqrt{n}}=29.11 \pm 1.96 \frac{20.72}{\sqrt{500}}=27.29, 30.93\]</span></p>
 <p>Note that, in the following, the author used 2 times SE to calculate the CI. The relationship between SD and SE:</p>
@@ -237,10 +248,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb30-16" title="16">}</a></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">out =<span class="st"> </span><span class="kw">with</span>(CommuteAtlanta, <span class="kw">boot.mean</span>(Distance, <span class="dt">B =</span> <span class="dv">1000</span>))</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre><code>## [1] 16.89118 19.42082</code></pre>
+<pre><code>## [1] 16.95266 19.35934</code></pre>
+</div>
+<div id="sample-function" class="section level2">
+<h2><span class="header-section-number">5.3</span> Sample function</h2>
 <p>To understand the function of sample in R.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">sample</span>(<span class="dv">20</span>,<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>##  [1]  4 16  6 14 10  5  6 17 20 15 14 19 12  5  2  8 18  2 17 18</code></pre>
+<pre><code>##  [1] 12  8 12  7 13  1 16 12  3 10 12  9  1 12  8 14  1 12  7  6</code></pre>
 <p>The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, [] suggests the indexing.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">n =<span class="st"> </span><span class="kw">length</span>(CommuteAtlanta<span class="op">$</span>Distance)</a>
 <a class="sourceLine" id="cb35-2" title="2">B =<span class="st"> </span><span class="dv">1000</span></a>
@@ -252,19 +266,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb35-8" title="8">}</a>
 <a class="sourceLine" id="cb35-9" title="9"></a>
 <a class="sourceLine" id="cb35-10" title="10"><span class="kw">with</span>(CommuteAtlanta, <span class="kw">mean</span>(Distance) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(result))</a></code></pre></div>
-<pre><code>## [1] 16.95964 19.35236</code></pre>
+<pre><code>## [1] 16.93977 19.37223</code></pre>
+</div>
+<div id="proportion" class="section level2">
+<h2><span class="header-section-number">5.4</span> Proportion</h2>
 <p>So far, we have dealed with means. How about porpotions?Remember that, when calculating means, it starts with a single column of data to calculate the mean. Similarly, when calculating porpotions, you can just use a single column of data.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">11</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">19</span>))</a>
 <a class="sourceLine" id="cb37-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">30</span>)</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre><code>## [1] 0.1891847 0.5441486</code></pre>
+<pre><code>## [1] 0.1883801 0.5449532</code></pre>
 <p>However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">741</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">699</span>))</a>
 <a class="sourceLine" id="cb39-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="fl">0.005</span>)</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre><code>## [1] 0.4891848 0.5399819</code></pre>
+<pre><code>## [1] 0.4881672 0.5409995</code></pre>
+</div>
+<div id="boot-package" class="section level2">
+<h2><span class="header-section-number">5.5</span> boot package</h2>
 <p>After having a basic idea of boostrapping, we can then use the package of boot.</p>
 
+</div>
 </div>
             </section>
 
