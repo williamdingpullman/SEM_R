@@ -17,4 +17,4 @@
 \contentsline {chapter}{\numberline {3}Real data example (Simple linear regression)}{11}{chapter.3}% 
 \contentsline {section}{\numberline {3.1}Read the data into the R Studio environment.}{11}{section.3.1}% 
 \contentsline {chapter}{\numberline {4}Real data example (Multiple linear regression)}{15}{chapter.4}% 
-\contentsline {chapter}{\numberline {5}SEM}{17}{chapter.5}% 
+\contentsline {chapter}{\numberline {5}Bootstrapping}{17}{chapter.5}% 

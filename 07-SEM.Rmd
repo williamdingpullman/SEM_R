@@ -1,3 +1,26 @@
-# SEM
+# Bootstrapping 
 
-SEM and R
+The following note is made when I was studying Bret Larget's note posted online.
+http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf
+
+He used the data from LOck5data as an example.
+
+```{r}
+library(Lock5Data)
+data(CommuteAtlanta)
+str(CommuteAtlanta)
+
+time.mean = with(CommuteAtlanta, mean(Time))
+
+time.mean
+```
+
+Now, he sampled a b*n table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is 1000*500 table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of 1000*500 from those 500 data points. After that, the matrix function put such 1000*500 data points into a matrix.  
+
+
+```{r}
+B = 1000
+n = nrow(CommuteAtlanta)
+boot.samples = matrix(sample(CommuteAtlanta$Time, size = B * n, replace = TRUE),
+                      B, n)
+```

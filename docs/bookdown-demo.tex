@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2021-04-19}
+    \date{2021-04-21}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -430,10 +430,53 @@ In the following, we conduct a simple linear regression.
 ##     motiv            99.800    6.312   15.811    0.000
 \end{verbatim}
 
-\hypertarget{sem}{%
-\chapter{SEM}\label{sem}}
+\hypertarget{bootstrapping}{%
+\chapter{Bootstrapping}\label{bootstrapping}}
 
-SEM and R
+The following note is made when I was studying Bret Larget's note posted online.
+\url{http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf}
+
+He used the data from LOck5data as an example.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(Lock5Data)}
+\KeywordTok{data}\NormalTok{(CommuteAtlanta)}
+\KeywordTok{str}\NormalTok{(CommuteAtlanta)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    500 obs. of  5 variables:
+##  $ City    : Factor w/ 1 level "Atlanta": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Age     : int  19 55 48 45 48 43 48 41 47 39 ...
+##  $ Distance: int  10 45 12 4 15 33 15 4 25 1 ...
+##  $ Time    : int  15 60 45 10 30 60 45 10 25 15 ...
+##  $ Sex     : Factor w/ 2 levels "F","M": 2 2 2 1 1 2 2 1 2 1 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{time.mean =}\StringTok{ }\KeywordTok{with}\NormalTok{(CommuteAtlanta, }\KeywordTok{mean}\NormalTok{(Time))}
+
+\NormalTok{time.mean}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 29.11
+\end{verbatim}
+
+Now, he sampled a b\emph{n table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is 1000}500 table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of 1000\emph{500 from those 500 data points. After that, the matrix function put such 1000}500 data points into a matrix.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{B =}\StringTok{ }\DecValTok{1000}
+\NormalTok{n =}\StringTok{ }\KeywordTok{nrow}\NormalTok{(CommuteAtlanta)}
+\NormalTok{boot.samples =}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{sample}\NormalTok{(CommuteAtlanta}\OperatorTok{$}\NormalTok{Time, }\DataTypeTok{size =}\NormalTok{ B }\OperatorTok{*}\StringTok{ }\NormalTok{n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{),}
+\NormalTok{                      B, n)}
+\end{Highlighting}
+\end{Shaded}
 
 \bibliography{book.bib,packages.bib}
 

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>SEM and R</title>
+  <title>Chapter 5 Bootstrapping | SEM and R</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="SEM and R" />
+  <meta property="og:title" content="Chapter 5 Bootstrapping | SEM and R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="SEM and R" />
+  <meta name="twitter:title" content="Chapter 5 Bootstrapping | SEM and R" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="real-data-example-multiple-linear-regression.html"/>
 
-<link rel="next" href="intro.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -174,14 +174,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">SEM and R</h1>
-<p class="author"><em>Bill</em></p>
-<p class="date"><em>2021-04-21</em></p>
-</div>
-<div id="sem-and-r" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> SEM and R</h1>
-<p>This is the starting point.</p>
+<div id="bootstrapping" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Bootstrapping</h1>
+<p>The following note is made when I was studying Bret Larget’s note posted online.
+<a href="http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf" class="uri">http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf</a></p>
+<p>He used the data from LOck5data as an example.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">library</span>(Lock5Data)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">data</span>(CommuteAtlanta)</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">str</span>(CommuteAtlanta)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    500 obs. of  5 variables:
+##  $ City    : Factor w/ 1 level &quot;Atlanta&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Age     : int  19 55 48 45 48 43 48 41 47 39 ...
+##  $ Distance: int  10 45 12 4 15 33 15 4 25 1 ...
+##  $ Time    : int  15 60 45 10 30 60 45 10 25 15 ...
+##  $ Sex     : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 2 2 1 1 2 2 1 2 1 ...</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">time.mean =<span class="st"> </span><span class="kw">with</span>(CommuteAtlanta, <span class="kw">mean</span>(Time))</a>
+<a class="sourceLine" id="cb16-2" title="2"></a>
+<a class="sourceLine" id="cb16-3" title="3">time.mean</a></code></pre></div>
+<pre><code>## [1] 29.11</code></pre>
+<p>Now, he sampled a b<em>n table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is 1000</em>500 table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of 1000<em>500 from those 500 data points. After that, the matrix function put such 1000</em>500 data points into a matrix.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">B =<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb18-2" title="2">n =<span class="st"> </span><span class="kw">nrow</span>(CommuteAtlanta)</a>
+<a class="sourceLine" id="cb18-3" title="3">boot.samples =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(CommuteAtlanta<span class="op">$</span>Time, <span class="dt">size =</span> B <span class="op">*</span><span class="st"> </span>n, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb18-4" title="4">                      B, n)</a></code></pre></div>
 
 </div>
             </section>
@@ -189,8 +204,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
+<a href="real-data-example-multiple-linear-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
