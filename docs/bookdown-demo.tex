@@ -467,7 +467,7 @@ He used the data from LOck5data as an example.
 ## [1] 29.11
 \end{verbatim}
 
-Now, he sampled a b\emph{n table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is 1000}500 table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of 1000\emph{500 from those 500 data points. After that, the matrix function put such 1000}500 data points into a matrix.
+Now, he sampled a (b times n) table. Note that, the Atlanta data has 500 row, as it has 500 observations (or, people). But, in the following new matrix, it is a (1000 times 500) table. Also, it should be noted that the logic of sample function in R. This webpage provides some insight into this function. Basically, the following R code randomly sample a bigger sample of (1000 times 500) from those 500 data points. After that, the matrix function put such (1000 times 500) data points into a matrix of (1000 times 500).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -477,6 +477,133 @@ Now, he sampled a b\emph{n table. Note that, the Atlanta data has 500 row, as it
 \NormalTok{                      B, n)}
 \end{Highlighting}
 \end{Shaded}
+
+Next, we need to calculate the mean for each row. Remember, we have 1000 rows. Note that, 1 in the apply function indicates that we calculate means on each row, whereas 2 indicates to each column.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{boot.statistics =}\StringTok{ }\KeywordTok{apply}\NormalTok{(boot.samples, }\DecValTok{1}\NormalTok{, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+We can then plot all the means.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{(ggplot2)}
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{meanTime =}\NormalTok{ boot.statistics),}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{meanTime)) }\OperatorTok{+}
+\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{binwidth=}\FloatTok{0.25}\NormalTok{,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y=}\NormalTok{..density..)) }\OperatorTok{+}
+\KeywordTok{geom_density}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{time.se =}\StringTok{ }\KeywordTok{sd}\NormalTok{(boot.statistics)}
+\NormalTok{time.se}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9057424
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{me =}\StringTok{ }\KeywordTok{ceiling}\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{time.se)}\OperatorTok{/}\DecValTok{10}
+\NormalTok{me}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{round}\NormalTok{(time.mean, }\DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{) }\OperatorTok{*}\StringTok{ }\NormalTok{me}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 27.2 31.0
+\end{verbatim}
+
+Note, if we do not use bootstraping, we can use the standard CI formula (\url{https://www.mathsisfun.com/data/confidence-interval.html}). This formula assumes normal distribution. As we can see, this is close to the result based on the bootstrapping method.
+
+\[\overline{X} \pm Z \frac{S}{\sqrt{n}}=29.11 \pm 1.96 \frac{20.72}{\sqrt{500}}=27.29, 30.93\]
+
+Note that, in the following, the author used 2 times SE to calculate the CI. The relationship between SD and SE:
+
+``Now the sample mean will vary from sample to sample; the way this variation occurs is described by the ``sampling distribution'' of the mean. We can estimate how much sample means will vary from the standard deviation of this sampling distribution, which we call the standard error (SE) of the estimate of the mean. As the standard error is a type of standard deviation, confusion is understandable. Another way of considering the standard error is as a measure of the precision of the sample mean." (\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1255808/})
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{boot.mean =}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x,B,}\DataTypeTok{binwidth=}\OtherTok{NULL}\NormalTok{)}
+\NormalTok{\{}
+\NormalTok{n =}\StringTok{ }\KeywordTok{length}\NormalTok{(x)}
+\NormalTok{boot.samples =}\StringTok{ }\KeywordTok{matrix}\NormalTok{( }\KeywordTok{sample}\NormalTok{(x,}\DataTypeTok{size=}\NormalTok{n}\OperatorTok{*}\NormalTok{B,}\DataTypeTok{replace=}\OtherTok{TRUE}\NormalTok{), B, n)}
+\NormalTok{boot.statistics =}\StringTok{ }\KeywordTok{apply}\NormalTok{(boot.samples,}\DecValTok{1}\NormalTok{,mean)}
+\NormalTok{se =}\StringTok{ }\KeywordTok{sd}\NormalTok{(boot.statistics)}
+\KeywordTok{require}\NormalTok{(ggplot2)}
+\ControlFlowTok{if}\NormalTok{ ( }\KeywordTok{is.null}\NormalTok{(binwidth) )}
+\NormalTok{binwidth =}\StringTok{ }\KeywordTok{diff}\NormalTok{(}\KeywordTok{range}\NormalTok{(boot.statistics))}\OperatorTok{/}\DecValTok{30}
+\NormalTok{p =}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x=}\NormalTok{boot.statistics),}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{x)) }\OperatorTok{+}
+\KeywordTok{geom_histogram}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y=}\NormalTok{..density..),}\DataTypeTok{binwidth=}\NormalTok{binwidth) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_density}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(p)}
+\NormalTok{interval =}\StringTok{ }\KeywordTok{mean}\NormalTok{(x) }\OperatorTok{+}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}\OperatorTok{*}\DecValTok{2}\OperatorTok{*}\NormalTok{se}
+\KeywordTok{print}\NormalTok{( interval )}
+\KeywordTok{return}\NormalTok{( }\KeywordTok{list}\NormalTok{(}\DataTypeTok{boot.statistics =}\NormalTok{ boot.statistics, }\DataTypeTok{interval=}\NormalTok{interval, }\DataTypeTok{se=}\NormalTok{se, }\DataTypeTok{plot=}\NormalTok{p) )}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{out =}\StringTok{ }\KeywordTok{with}\NormalTok{(CommuteAtlanta, }\KeywordTok{boot.mean}\NormalTok{(Distance, }\DataTypeTok{B =} \DecValTok{1000}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{verbatim}
+## [1] 16.876 19.436
+\end{verbatim}
+
+To understand the function of sample in R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sample}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 20 16  3  9  2  4 16 11  8 17 19  7  3 15  2 13 17  9  3 17
+\end{verbatim}
+
+The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, {[}{]} suggests the indexing.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n =}\StringTok{ }\KeywordTok{length}\NormalTok{(CommuteAtlanta}\OperatorTok{$}\NormalTok{Distance)}
+\NormalTok{B =}\StringTok{ }\DecValTok{1000}
+\NormalTok{result =}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, B)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{B)}
+\NormalTok{\{}
+\NormalTok{boot.sample =}\StringTok{ }\KeywordTok{sample}\NormalTok{(n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{result[i] =}\StringTok{ }\KeywordTok{mean}\NormalTok{(CommuteAtlanta}\OperatorTok{$}\NormalTok{Distance[boot.sample])}
+\NormalTok{\}}
+
+\KeywordTok{with}\NormalTok{(CommuteAtlanta, }\KeywordTok{mean}\NormalTok{(Distance) }\OperatorTok{+}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{) }\OperatorTok{*}\StringTok{ }\DecValTok{2} \OperatorTok{*}\StringTok{ }\KeywordTok{sd}\NormalTok{(result))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16.93819 19.37381
+\end{verbatim}
 
 \bibliography{book.bib,packages.bib}
 
