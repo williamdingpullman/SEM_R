@@ -507,7 +507,7 @@ We can then plot all the means.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.9057424
+## [1] 0.9091176
 \end{verbatim}
 
 \begin{Shaded}
@@ -569,7 +569,7 @@ Note that, in the following, the author used 2 times SE to calculate the CI. The
 \includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \begin{verbatim}
-## [1] 16.876 19.436
+## [1] 16.9218 19.3902
 \end{verbatim}
 
 To understand the function of sample in R.
@@ -581,7 +581,7 @@ To understand the function of sample in R.
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] 20 16  3  9  2  4 16 11  8 17 19  7  3 15  2 13 17  9  3 17
+##  [1] 17 17 14 17 14 10 13 17  7  1 12  7 12 12  8 15  4 18 19  7
 \end{verbatim}
 
 The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, {[}{]} suggests the indexing.
@@ -602,8 +602,40 @@ The following uses loop to do the resampling. It uses sample function to index t
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 16.93819 19.37381
+## [1] 16.95361 19.35839
 \end{verbatim}
+
+So far, we have dealed with means. How about porpotions?Remember that, when calculating means, it starts with a single column of data to calculate the mean. Similarly, when calculating porpotions, you can just use a single column of data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reeses =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{11}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{19}\NormalTok{))}
+\NormalTok{reeses.boot =}\StringTok{ }\KeywordTok{boot.mean}\NormalTok{(reeses, }\DecValTok{1000}\NormalTok{, }\DataTypeTok{binwidth =} \DecValTok{1}\OperatorTok{/}\DecValTok{30}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{verbatim}
+## [1] 0.1929006 0.5404327
+\end{verbatim}
+
+However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{reeses =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{741}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{699}\NormalTok{))}
+\NormalTok{reeses.boot =}\StringTok{ }\KeywordTok{boot.mean}\NormalTok{(reeses, }\DecValTok{1000}\NormalTok{, }\DataTypeTok{binwidth =} \FloatTok{0.005}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{verbatim}
+## [1] 0.4881597 0.5410070
+\end{verbatim}
+
+After having a basic idea of boostrapping, we can then use the package of boot.
 
 \bibliography{book.bib,packages.bib}
 

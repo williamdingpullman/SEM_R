@@ -209,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">time.se =<span class="st"> </span><span class="kw">sd</span>(boot.statistics)</a>
 <a class="sourceLine" id="cb24-2" title="2">time.se</a></code></pre></div>
-<pre><code>## [1] 0.9215912</code></pre>
+<pre><code>## [1] 0.9354676</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">me =<span class="st"> </span><span class="kw">ceiling</span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>time.se)<span class="op">/</span><span class="dv">10</span></a>
 <a class="sourceLine" id="cb26-2" title="2">me</a></code></pre></div>
 <pre><code>## [1] 1.9</code></pre>
@@ -237,10 +237,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb30-16" title="16">}</a></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">out =<span class="st"> </span><span class="kw">with</span>(CommuteAtlanta, <span class="kw">boot.mean</span>(Distance, <span class="dt">B =</span> <span class="dv">1000</span>))</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre><code>## [1] 16.9641 19.3479</code></pre>
+<pre><code>## [1] 16.89118 19.42082</code></pre>
 <p>To understand the function of sample in R.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">sample</span>(<span class="dv">20</span>,<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>##  [1] 17  9 14 12 13  1 15 13  2 10 19  4 20 13 18  8  1 14  6  5</code></pre>
+<pre><code>##  [1]  4 16  6 14 10  5  6 17 20 15 14 19 12  5  2  8 18  2 17 18</code></pre>
 <p>The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, [] suggests the indexing.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">n =<span class="st"> </span><span class="kw">length</span>(CommuteAtlanta<span class="op">$</span>Distance)</a>
 <a class="sourceLine" id="cb35-2" title="2">B =<span class="st"> </span><span class="dv">1000</span></a>
@@ -252,7 +252,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb35-8" title="8">}</a>
 <a class="sourceLine" id="cb35-9" title="9"></a>
 <a class="sourceLine" id="cb35-10" title="10"><span class="kw">with</span>(CommuteAtlanta, <span class="kw">mean</span>(Distance) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(result))</a></code></pre></div>
-<pre><code>## [1] 16.91513 19.39687</code></pre>
+<pre><code>## [1] 16.95964 19.35236</code></pre>
+<p>So far, we have dealed with means. How about porpotions?Remember that, when calculating means, it starts with a single column of data to calculate the mean. Similarly, when calculating porpotions, you can just use a single column of data.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">11</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">19</span>))</a>
+<a class="sourceLine" id="cb37-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">30</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre><code>## [1] 0.1891847 0.5441486</code></pre>
+<p>However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">741</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">699</span>))</a>
+<a class="sourceLine" id="cb39-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="fl">0.005</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre><code>## [1] 0.4891848 0.5399819</code></pre>
+<p>After having a basic idea of boostrapping, we can then use the package of boot.</p>
 
 </div>
             </section>

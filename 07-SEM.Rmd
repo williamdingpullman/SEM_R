@@ -108,3 +108,22 @@ result[i] = mean(CommuteAtlanta$Distance[boot.sample])
 
 with(CommuteAtlanta, mean(Distance) + c(-1, 1) * 2 * sd(result))
 ```
+
+
+So far, we have dealed with means. How about porpotions?Remember that, when calculating means, it starts with a single column of data to calculate the mean. Similarly, when calculating porpotions, you can just use a single column of data. 
+
+```{R}
+reeses = c(rep(1, 11), rep(0, 19))
+reeses.boot = boot.mean(reeses, 1000, binwidth = 1/30)
+```
+
+However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.
+
+```{R}
+reeses = c(rep(1, 741), rep(0, 699))
+reeses.boot = boot.mean(reeses, 1000, binwidth = 0.005)
+```
+
+
+After having a basic idea of boostrapping, we can then use the package of boot.
+
