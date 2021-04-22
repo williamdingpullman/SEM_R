@@ -1,12 +1,14 @@
 # Bootstrapping 
 
-## Introduction 
+## Warning 
 
 __Warning:__
 
 __This page is for my own personal study purpose. Distribution is prohibited.__
 
+---
 
+## Introduction
 
 The following note is made when I was studying Bret Larget's note posted online.
 http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf

@@ -154,14 +154,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="real-data-example-multiple-linear-regression.html"><a href="real-data-example-multiple-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Real data example (Multiple linear regression)</a></li>
 <li class="chapter" data-level="5" data-path="bootstrapping.html"><a href="bootstrapping.html"><i class="fa fa-check"></i><b>5</b> Bootstrapping</a><ul>
-<li class="chapter" data-level="5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
-<li class="chapter" data-level="5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#normal-distribution-sd-se"><i class="fa fa-check"></i><b>5.2</b> Normal distribution, SD, SE</a></li>
-<li class="chapter" data-level="5.3" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-function"><i class="fa fa-check"></i><b>5.3</b> Sample function</a></li>
-<li class="chapter" data-level="5.4" data-path="bootstrapping.html"><a href="bootstrapping.html#proportion"><i class="fa fa-check"></i><b>5.4</b> Proportion</a></li>
-<li class="chapter" data-level="5.5" data-path="bootstrapping.html"><a href="bootstrapping.html#boot-package"><i class="fa fa-check"></i><b>5.5</b> boot package</a></li>
-<li class="chapter" data-level="5.6" data-path="bootstrapping.html"><a href="bootstrapping.html#concept-of-percentile"><i class="fa fa-check"></i><b>5.6</b> Concept of Percentile</a></li>
-<li class="chapter" data-level="5.7" data-path="bootstrapping.html"><a href="bootstrapping.html#use-boot-for-correlation"><i class="fa fa-check"></i><b>5.7</b> Use Boot for correlation</a></li>
-<li class="chapter" data-level="5.8" data-path="bootstrapping.html"><a href="bootstrapping.html#use-r-for-mediation"><i class="fa fa-check"></i><b>5.8</b> Use R for mediation</a></li>
+<li class="chapter" data-level="5.1" data-path="bootstrapping.html"><a href="bootstrapping.html#warning"><i class="fa fa-check"></i><b>5.1</b> Warning</a></li>
+<li class="chapter" data-level="5.2" data-path="bootstrapping.html"><a href="bootstrapping.html#introduction"><i class="fa fa-check"></i><b>5.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.3" data-path="bootstrapping.html"><a href="bootstrapping.html#normal-distribution-sd-se"><i class="fa fa-check"></i><b>5.3</b> Normal distribution, SD, SE</a></li>
+<li class="chapter" data-level="5.4" data-path="bootstrapping.html"><a href="bootstrapping.html#sample-function"><i class="fa fa-check"></i><b>5.4</b> Sample function</a></li>
+<li class="chapter" data-level="5.5" data-path="bootstrapping.html"><a href="bootstrapping.html#proportion"><i class="fa fa-check"></i><b>5.5</b> Proportion</a></li>
+<li class="chapter" data-level="5.6" data-path="bootstrapping.html"><a href="bootstrapping.html#boot-package"><i class="fa fa-check"></i><b>5.6</b> boot package</a></li>
+<li class="chapter" data-level="5.7" data-path="bootstrapping.html"><a href="bootstrapping.html#concept-of-percentile"><i class="fa fa-check"></i><b>5.7</b> Concept of Percentile</a></li>
+<li class="chapter" data-level="5.8" data-path="bootstrapping.html"><a href="bootstrapping.html#use-boot-for-correlation"><i class="fa fa-check"></i><b>5.8</b> Use Boot for correlation</a></li>
+<li class="chapter" data-level="5.9" data-path="bootstrapping.html"><a href="bootstrapping.html#use-r-for-mediation"><i class="fa fa-check"></i><b>5.9</b> Use R for mediation</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://williamdingpullman.github.io/" target="blank">Bill's State Notes</a></li>
@@ -185,10 +186,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="bootstrapping" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Bootstrapping</h1>
-<div id="introduction" class="section level2">
-<h2><span class="header-section-number">5.1</span> Introduction</h2>
+<div id="warning" class="section level2">
+<h2><span class="header-section-number">5.1</span> Warning</h2>
 <p><strong>Warning:</strong></p>
 <p><strong>This page is for my own personal study purpose. Distribution is prohibited.</strong></p>
+<hr />
+</div>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">5.2</span> Introduction</h2>
 <p>The following note is made when I was studying Bret Larget’s note posted online.
 <a href="http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf" class="uri">http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf</a></p>
 <p>He used the data from LOck5data as an example.</p>
@@ -222,15 +227,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">time.se =<span class="st"> </span><span class="kw">sd</span>(boot.statistics)</a>
 <a class="sourceLine" id="cb24-2" title="2">time.se</a></code></pre></div>
-<pre><code>## [1] 0.9340072</code></pre>
+<pre><code>## [1] 0.8924831</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">me =<span class="st"> </span><span class="kw">ceiling</span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>time.se)<span class="op">/</span><span class="dv">10</span></a>
 <a class="sourceLine" id="cb26-2" title="2">me</a></code></pre></div>
-<pre><code>## [1] 1.9</code></pre>
+<pre><code>## [1] 1.8</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">round</span>(time.mean, <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span>me</a></code></pre></div>
-<pre><code>## [1] 27.2 31.0</code></pre>
+<pre><code>## [1] 27.3 30.9</code></pre>
 </div>
 <div id="normal-distribution-sd-se" class="section level2">
-<h2><span class="header-section-number">5.2</span> Normal distribution, SD, SE</h2>
+<h2><span class="header-section-number">5.3</span> Normal distribution, SD, SE</h2>
 <p>Note, if we do not use bootstraping, we can use the standard CI formula (<a href="https://www.mathsisfun.com/data/confidence-interval.html" class="uri">https://www.mathsisfun.com/data/confidence-interval.html</a>). This formula assumes normal distribution. As we can see, this is close to the result based on the bootstrapping method.</p>
 <p><span class="math display">\[\overline{X} \pm Z \frac{S}{\sqrt{n}}=29.11 \pm 1.96 \frac{20.72}{\sqrt{500}}=27.29, 30.93\]</span></p>
 <p>Note that, in the following, the author used 2 times SE to calculate the CI. The relationship between SD and SE:</p>
@@ -253,13 +258,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb30-16" title="16">}</a></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">out =<span class="st"> </span><span class="kw">with</span>(CommuteAtlanta, <span class="kw">boot.mean</span>(Distance, <span class="dt">B =</span> <span class="dv">1000</span>))</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre><code>## [1] 16.93958 19.37242</code></pre>
+<pre><code>## [1] 16.88967 19.42233</code></pre>
 </div>
 <div id="sample-function" class="section level2">
-<h2><span class="header-section-number">5.3</span> Sample function</h2>
+<h2><span class="header-section-number">5.4</span> Sample function</h2>
 <p>To understand the function of sample in R.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">sample</span>(<span class="dv">20</span>,<span class="dt">replace =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>##  [1]  5 11 20 20 14 15  3 10 19 13  2  2 11  8  5  8 20 16 14 10</code></pre>
+<pre><code>##  [1] 10 10  7  9 18 10 11  9  9  7 10 10 18 14  6  5  9 17  1 14</code></pre>
 <p>The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, [] suggests the indexing.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">n =<span class="st"> </span><span class="kw">length</span>(CommuteAtlanta<span class="op">$</span>Distance)</a>
 <a class="sourceLine" id="cb35-2" title="2">B =<span class="st"> </span><span class="dv">1000</span></a>
@@ -271,23 +276,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb35-8" title="8">}</a>
 <a class="sourceLine" id="cb35-9" title="9"></a>
 <a class="sourceLine" id="cb35-10" title="10"><span class="kw">with</span>(CommuteAtlanta, <span class="kw">mean</span>(Distance) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(result))</a></code></pre></div>
-<pre><code>## [1] 16.94883 19.36317</code></pre>
+<pre><code>## [1] 16.92086 19.39114</code></pre>
 </div>
 <div id="proportion" class="section level2">
-<h2><span class="header-section-number">5.4</span> Proportion</h2>
+<h2><span class="header-section-number">5.5</span> Proportion</h2>
 <p>So far, we have dealed with means. How about porpotions?Remember that, when calculating means, it starts with a single column of data to calculate the mean. Similarly, when calculating porpotions, you can just use a single column of data.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">11</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">19</span>))</a>
 <a class="sourceLine" id="cb37-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">30</span>)</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre><code>## [1] 0.1849012 0.5484321</code></pre>
+<pre><code>## [1] 0.1972970 0.5360364</code></pre>
 <p>However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">reeses =<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">741</span>), <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">699</span>))</a>
 <a class="sourceLine" id="cb39-2" title="2">reeses.boot =<span class="st"> </span><span class="kw">boot.mean</span>(reeses, <span class="dv">1000</span>, <span class="dt">binwidth =</span> <span class="fl">0.005</span>)</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<pre><code>## [1] 0.4888704 0.5402963</code></pre>
+<pre><code>## [1] 0.4888569 0.5403097</code></pre>
 </div>
 <div id="boot-package" class="section level2">
-<h2><span class="header-section-number">5.5</span> boot package</h2>
+<h2><span class="header-section-number">5.6</span> boot package</h2>
 <p>After having a basic idea of boostrapping, we can then use the package of boot.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">library</span>(boot)</a></code></pre></div>
 <pre><code>## Warning: package &#39;boot&#39; was built under R version 3.6.3</code></pre>
@@ -311,14 +316,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Intervals : 
 ## Level      Normal              Basic         
-## 95%   (27.29, 30.94 )   (27.25, 30.91 )  
+## 95%   (27.33, 30.90 )   (27.27, 30.83 )  
 ## 
 ## Level     Percentile            BCa          
-## 95%   (27.31, 30.97 )   (27.39, 31.07 )  
+## 95%   (27.39, 30.95 )   (27.46, 31.06 )  
 ## Calculations and Intervals on Original Scale</code></pre>
 </div>
 <div id="concept-of-percentile" class="section level2">
-<h2><span class="header-section-number">5.6</span> Concept of Percentile</h2>
+<h2><span class="header-section-number">5.7</span> Concept of Percentile</h2>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">require</span>(Lock5Data)</a>
 <a class="sourceLine" id="cb46-2" title="2"><span class="kw">data</span>(ImmuneTea)</a>
 <a class="sourceLine" id="cb46-3" title="3">tea =<span class="st"> </span><span class="kw">with</span>(ImmuneTea, InterferonGamma[Drink<span class="op">==</span><span class="st">&quot;Tea&quot;</span>])</a>
@@ -343,107 +348,123 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb46-22" title="22"></a>
 <a class="sourceLine" id="cb46-23" title="23">boot.stat =<span class="st"> </span>tea.boot <span class="op">-</span><span class="st"> </span>coffee.boot</a>
 <a class="sourceLine" id="cb46-24" title="24">boot.stat</a></code></pre></div>
-<pre><code>##   [1] 16.7909091 18.7818182 14.2363636 14.0090909  1.4000000 16.7909091
-##   [7] 16.9272727 24.8545455 21.9454545 12.3545455 23.4181818 17.4272727
-##  [13]  8.8545455 20.9727273 14.3454545 17.5909091 23.5909091  8.9909091
-##  [19]  6.9727273 13.1272727  8.6272727 13.7181818  3.8545455 11.9818182
-##  [25] 17.3090909 30.2545455 25.0272727 20.9545455 21.9818182 19.5636364
-##  [31] -0.5090909 21.8090909 29.8090909 16.1000000  8.7181818 24.4545455
-##  [37] 21.5727273 27.1181818 25.0272727 20.5000000 13.4090909 27.2545455
-##  [43] 14.0181818 24.7181818 27.2272727 13.1363636 24.4090909 13.9454545
-##  [49] 16.3909091 22.2636364  7.5000000 31.0000000 16.2727273  1.1818182
-##  [55] 23.5363636 -5.2636364 34.9090909 18.8818182 14.2000000 24.5000000
-##  [61] 13.7545455 31.1000000 18.0727273 10.3636364  8.4818182  9.4818182
-##  [67] 14.8818182 18.6000000 17.2090909 22.8000000 20.8636364 19.4272727
-##  [73] 14.3818182 19.3909091 16.4000000  6.0181818 13.2272727  7.2454545
-##  [79] 25.2454545 22.6363636  5.4636364  1.6454545 23.6090909 16.2636364
-##  [85] 15.0545455  7.0636364 12.1636364 20.8454545  3.5272727 23.2090909
-##  [91]  6.6909091  3.8090909 10.9181818 19.9363636 18.2727273  7.3636364
-##  [97] 27.8090909 17.5181818 23.6909091 24.1454545 30.5000000 19.9727273
-## [103] 19.4090909 12.2636364 22.6181818 15.1727273 18.6636364 12.5636364
-## [109] 23.8909091 20.6181818 12.5909091  4.8818182  5.6272727 25.2909091
-## [115] 23.6272727 29.0727273 16.0636364 15.2909091 13.1363636 -0.3454545
-## [121]  4.3636364 29.6090909  3.8818182  8.8909091 17.6727273 19.0272727
-## [127]  3.9818182 16.3363636  6.8090909 22.2000000 24.4636364 23.8272727
-## [133] 19.9454545  7.0545455 29.2272727 21.7818182 19.3272727 13.3727273
-## [139] 14.4818182 18.6454545 23.4818182 20.2727273 -1.8454545 15.0818182
-## [145] 26.6727273  9.4454545 22.6272727 14.8818182 23.9363636 19.4090909
-## [151] 25.5000000 28.5000000 12.3636364 14.5545455 30.5363636 14.1000000
-## [157] 11.4636364 19.3727273 12.6272727 19.6454545 15.8818182 16.6090909
-## [163] 20.3000000 31.8727273 18.0909091 18.3636364 10.3363636  3.6363636
-## [169] 20.4727273 15.2636364 32.6000000 13.7636364 25.7727273 10.9272727
-## [175]  8.9909091 14.0181818 20.6818182 21.4818182 22.2363636 22.1272727
-## [181]  9.3727273 29.1181818 20.0818182 38.0909091 15.1272727  3.6818182
-## [187] 17.3181818 19.0090909 10.8181818 14.7909091  7.7272727 25.0909091
-## [193] 14.7272727 13.1090909 20.4454545 14.4545455  9.6363636 21.2909091
-## [199] 20.1454545 28.3363636 32.4363636 22.2545455 16.6818182  7.9090909
-## [205] 14.7818182 22.1272727 22.4363636  6.3272727 13.7818182 10.9363636
-## [211]  2.5272727 11.8363636 18.3545455  8.8727273 30.9181818 10.8727273
-## [217] 13.8545455  9.4000000 35.6818182  2.0818182 -0.3272727  9.8363636
-## [223] 18.1363636 23.1454545 26.9727273 17.6545455 12.7272727 15.6454545
-## [229] 21.4909091 20.1181818 21.1727273 16.2636364 23.8818182  6.8545455
-## [235] -2.6545455 10.8818182 21.5363636 26.3454545 25.5363636 15.9090909
-## [241] 19.1272727 12.1545455 12.6818182 11.3454545 14.2636364 15.6272727
-## [247] 14.0545455 25.2727273 12.5727273  4.0090909 14.0909091 22.1909091
-## [253] 22.7545455 25.8000000  2.4545455 15.5909091 14.9727273 11.5727273
-## [259] 23.9363636 26.0181818 17.5090909 26.7909091 26.5000000 25.1000000
-## [265] 17.2090909 24.7545455  7.4363636  3.2181818 10.7636364 23.6181818
-## [271] 17.6909091 18.7363636 24.2000000 14.4454545 20.4454545  7.8181818
-## [277] 26.1090909 18.1000000 20.8636364  7.9181818 22.1272727 23.0090909
-## [283] 18.3181818 21.6272727 29.3636364 12.4000000  8.6636364 24.3545455
-## [289] 18.5727273 15.6727273 16.2090909 12.1000000  9.0090909 20.6545455
-## [295] 21.2818182 17.4818182  8.1545455  1.5545455  9.2363636 26.8454545
-## [301] 14.5363636  6.0363636 16.0545455 10.0545455 23.2818182 27.9272727
-## [307] 11.8181818 17.1454545 16.9272727 25.4000000 26.8181818 26.3272727
-## [313] 22.0545455 15.1454545 27.6272727 17.9454545 12.3181818  5.1636364
-## [319] 23.3818182 -4.2181818 17.8000000 24.3636364 17.3454545 15.5000000
-## [325] 22.9000000 18.2000000 -2.7545455 30.8727273 13.3272727  6.9727273
-## [331] 13.2090909  9.2818182  9.0818182 12.3818182 23.8727273  6.0000000
-## [337]  7.4181818 22.1000000 20.3727273 16.6454545  7.4727273 12.5454545
-## [343] 11.9909091 13.0454545 18.5545455 30.4818182 17.8000000 12.4727273
-## [349] 13.1272727  7.4000000 20.6090909 14.5181818 19.8181818 13.2636364
-## [355]  9.7909091 14.6363636 17.2909091 22.8727273 24.6636364  6.6818182
-## [361] 24.9818182 32.3636364 20.6545455 10.8727273 11.5000000 11.1818182
-## [367] 17.3636364 23.1000000  9.4909091 10.4909091  6.9909091  3.4090909
-## [373] 27.1909091 -0.2545455 17.1818182 24.5454545 13.3454545 17.3000000
-## [379] 13.3545455 19.5909091 30.9545455 20.2000000 13.2272727 34.7090909
-## [385]  0.5727273 18.2454545 15.9909091 15.6363636 11.7181818 15.7090909
-## [391] 17.8545455 23.9727273 17.6818182 25.1090909 12.0454545  4.5818182
-## [397] 16.8727273  6.5363636 11.0181818 23.5818182 16.0090909 26.5818182
-## [403] 27.5545455 22.8000000  8.9090909 12.8909091 16.3727273 21.5000000
-## [409] 28.8818182  9.6727273 23.3272727 17.2727273 20.4818182 -0.4818182
-## [415] 10.8363636 22.3181818 12.8181818 21.7363636 16.6090909 38.0545455
-## [421] 21.6909091  7.9090909  8.3272727 12.0727273 27.0363636 19.8181818
-## [427] 21.4636364  0.3000000  0.8727273 24.8727273  1.1909091  8.2090909
-## [433] 13.3909091  5.3909091 32.1545455 22.4727273 16.1272727 32.4636364
-## [439] 22.6000000 22.4181818 11.6272727 26.4272727 10.3272727 38.7272727
-## [445] 28.9727273 21.5545455  7.8454545 20.0363636 12.7000000 21.8636364
-## [451]  3.6363636 12.6272727 10.6454545 29.7000000  3.2909091 21.8181818
-## [457] 19.6818182  9.9454545 13.3181818 19.0272727 13.2636364 20.9181818
-## [463] 19.0363636  3.6909091  6.8181818 19.0363636  4.9909091 23.7818182
-## [469] 23.1636364 16.6818182 16.5909091 13.7727273 17.8181818 13.6181818
-## [475] 10.3181818 20.5454545  2.8181818 18.0818182 11.7090909  0.3000000
-## [481] 29.3090909 22.5909091 20.3454545 19.9272727 13.5363636 13.2363636
-## [487] 24.6545455 14.7636364  3.8818182 21.2272727 19.4090909 18.0727273
-## [493] 17.9363636 28.0363636 11.2727273 20.4545455 15.4181818 19.2454545
-## [499] 13.6272727 32.1636364</code></pre>
+<pre><code>##   [1] 28.345454545 21.000000000 16.254545455 30.690909091 19.518181818
+##   [6]  7.845454545 27.309090909 17.436363636 21.690909091  9.918181818
+##  [11] 19.200000000 10.563636364 16.463636364 17.218181818 14.527272727
+##  [16] 38.618181818  9.172727273 26.563636364 21.809090909  2.790909091
+##  [21] 14.436363636 28.927272727 17.918181818 14.663636364 37.163636364
+##  [26] 21.054545455 24.345454545 11.890909091 17.618181818 13.063636364
+##  [31] 26.990909091  8.200000000 24.663636364  0.590909091 13.645454545
+##  [36] 21.490909091 21.900000000 29.445454545 17.472727273  9.790909091
+##  [41] 20.945454545  8.590909091  5.872727273 22.472727273 18.981818182
+##  [46] 11.563636364 11.972727273 25.490909091 25.927272727 34.872727273
+##  [51]  9.490909091  9.627272727 11.218181818 24.872727273 36.163636364
+##  [56] 14.800000000 22.254545455 11.663636364 22.336363636 17.300000000
+##  [61] 21.254545455  9.272727273 21.418181818 25.700000000 15.736363636
+##  [66] 13.563636364 20.354545455  5.181818182  6.209090909 11.672727273
+##  [71]  8.763636364 27.527272727 20.272727273 16.054545455 18.209090909
+##  [76]  7.800000000 26.754545455 28.572727273 34.036363636 14.345454545
+##  [81] 22.490909091 22.390909091 30.390909091 21.790909091  2.854545455
+##  [86] 19.000000000 29.172727273 26.027272727 19.736363636 18.327272727
+##  [91] 16.281818182 23.445454545 18.200000000  8.509090909 12.990909091
+##  [96] 21.872727273 19.945454545 28.127272727 15.245454545 24.318181818
+## [101] 39.481818182 21.718181818 -1.454545455 16.872727273 15.172727273
+## [106] 20.854545455 30.836363636 18.609090909  4.500000000 15.481818182
+## [111] 13.845454545 13.945454545 18.136363636 17.709090909 16.563636364
+## [116] 18.654545455 19.454545455 20.200000000  9.854545455 19.154545455
+## [121] 22.127272727 16.100000000 24.527272727  4.281818182 19.281818182
+## [126] 17.790909091  9.318181818 27.181818182 12.372727273 15.718181818
+## [131] 19.500000000 23.918181818 15.672727273 12.427272727 23.954545455
+## [136] 15.009090909  9.090909091 24.236363636 14.936363636 27.136363636
+## [141] 12.854545455  8.981818182 34.100000000  9.727272727 20.809090909
+## [146] 17.900000000 28.509090909 17.327272727 26.209090909 21.127272727
+## [151] 21.027272727 13.909090909 32.845454545  2.854545455 32.845454545
+## [156] 28.045454545 23.954545455  6.418181818  8.800000000  7.727272727
+## [161] 15.518181818  6.336363636 17.227272727 26.636363636 18.754545455
+## [166] 19.136363636 13.500000000  6.700000000 11.681818182 23.390909091
+## [171] 17.345454545 29.872727273  9.136363636 25.163636364 22.890909091
+## [176] 10.518181818 22.345454545 22.390909091 14.654545455 20.318181818
+## [181] 30.218181818 24.100000000 20.581818182 24.000000000 23.536363636
+## [186] 28.709090909 11.590909091  7.218181818 25.490909091 27.109090909
+## [191] 21.145454545 15.900000000 15.281818182 14.254545455 25.436363636
+## [196] 18.245454545 17.045454545 22.854545455  8.290909091  0.609090909
+## [201] 30.081818182 18.009090909  3.636363636 18.200000000 17.036363636
+## [206] 15.063636364 22.036363636 29.263636364 10.927272727 28.600000000
+## [211] 23.781818182 17.045454545 25.472727273 15.200000000 14.000000000
+## [216] 17.454545455 17.827272727 18.300000000 20.018181818 14.718181818
+## [221] 13.627272727 19.927272727 15.781818182 19.054545455 31.190909091
+## [226] 17.936363636 21.381818182 13.827272727  3.309090909  7.118181818
+## [231] 18.454545455 13.172727273 15.381818182 -0.600000000 23.181818182
+## [236]  5.545454545  9.336363636 15.890909091 22.209090909 28.918181818
+## [241] 19.481818182 15.172727273 35.836363636 35.500000000 14.563636364
+## [246] 18.245454545 24.545454545 14.118181818 13.909090909 13.645454545
+## [251] 22.709090909 18.727272727  6.736363636 27.572727273 22.018181818
+## [256] 26.527272727 21.272727273 22.718181818 21.136363636 22.427272727
+## [261]  8.581818182 24.845454545  9.172727273  2.300000000 23.072727273
+## [266] 21.663636364 13.045454545 23.981818182 21.063636364 17.700000000
+## [271] 33.181818182  4.390909091 16.845454545 18.836363636 12.400000000
+## [276] 13.581818182 24.309090909 24.272727273 16.736363636 25.481818182
+## [281] 17.345454545 11.354545455 17.145454545 16.800000000 -0.890909091
+## [286]  2.018181818  8.518181818 25.972727273 15.727272727  6.163636364
+## [291] 11.845454545 15.463636364 27.836363636 15.154545455 22.700000000
+## [296] 25.154545455 11.481818182 13.681818182 14.918181818  9.654545455
+## [301] 12.254545455 18.354545455 28.772727273 12.900000000 15.645454545
+## [306] 21.363636364 21.500000000 17.890909091  8.963636364 18.045454545
+## [311] 10.427272727 11.509090909 13.809090909 -1.181818182 30.063636364
+## [316] 22.372727273 16.481818182 12.818181818 16.363636364  8.136363636
+## [321] 17.690909091  6.627272727 18.800000000 18.636363636 15.854545455
+## [326] 14.109090909 11.218181818 17.518181818 21.081818182 11.809090909
+## [331] 33.090909091 11.081818182 14.709090909 18.918181818  0.345454545
+## [336] 11.372727273 13.454545455 21.018181818 17.409090909 27.436363636
+## [341] 19.009090909 18.863636364 15.881818182 31.427272727 14.736363636
+## [346] 18.118181818 28.345454545 20.654545455 19.609090909 23.854545455
+## [351] 15.972727273 20.627272727 22.963636364 23.400000000 20.036363636
+## [356] 32.363636364 28.272727273 17.218181818 12.963636364 10.445454545
+## [361]  4.900000000 21.472727273 25.290909091 23.981818182 24.145454545
+## [366] 25.100000000 12.818181818 24.963636364  3.900000000  1.336363636
+## [371] 11.618181818 20.881818182 28.709090909 10.981818182  8.436363636
+## [376] 17.236363636 23.263636364 29.445454545 23.727272727 16.700000000
+## [381] 31.890909091 11.845454545  5.209090909 22.309090909 20.736363636
+## [386]  0.009090909 14.654545455 15.209090909 15.045454545 14.163636364
+## [391] 11.645454545 31.390909091  8.345454545 13.445454545 23.663636364
+## [396] 28.209090909 19.036363636 13.600000000 23.572727273  7.936363636
+## [401]  6.245454545 22.081818182 30.618181818 20.700000000 25.654545455
+## [406] 31.600000000 -3.154545455 16.681818182  9.227272727 26.190909091
+## [411] 23.827272727  9.381818182 24.181818182 29.445454545 11.945454545
+## [416] 31.236363636 13.936363636 18.336363636 11.663636364 19.372727273
+## [421]  8.009090909 19.636363636 11.118181818 37.354545455 17.081818182
+## [426] 21.872727273 10.745454545 29.209090909 29.100000000 16.654545455
+## [431] 24.445454545 18.536363636 16.100000000 19.672727273 18.754545455
+## [436]  4.572727273  8.100000000 20.227272727  5.909090909  4.800000000
+## [441] 11.909090909 21.372727273 20.554545455 17.881818182 23.309090909
+## [446] 18.036363636 11.636363636 14.309090909 14.454545455 15.163636364
+## [451] 22.100000000 23.227272727 25.727272727 10.036363636 23.390909091
+## [456] 17.545454545 25.600000000 21.309090909  3.845454545 -1.590909091
+## [461] 24.090909091 18.472727273 22.645454545  6.154545455 10.118181818
+## [466]  2.709090909 16.972727273 12.954545455  9.945454545 14.000000000
+## [471] 25.372727273 15.245454545 22.954545455 17.218181818 13.072727273
+## [476]  6.354545455 23.636363636 14.172727273 19.836363636 38.218181818
+## [481] 16.627272727 24.190909091 31.381818182 19.981818182  8.463636364
+## [486] 15.618181818 22.954545455 13.000000000 31.981818182 18.363636364
+## [491] 13.590909091 19.236363636 21.590909091 14.245454545 16.909090909
+## [496]  7.590909091 16.463636364 19.309090909 17.563636364 16.818181818</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co"># Find endpoints for 90%, 95%, and 99% bootstrap confidence intervals using percentiles.</span></a>
 <a class="sourceLine" id="cb48-2" title="2"></a>
 <a class="sourceLine" id="cb48-3" title="3"><span class="co"># 90%:  5% 95%</span></a>
 <a class="sourceLine" id="cb48-4" title="4"><span class="kw">quantile</span>(boot.stat,<span class="kw">c</span>(<span class="fl">0.05</span>,<span class="fl">0.95</span>))</a></code></pre></div>
 <pre><code>##        5%       95% 
-##  3.403182 29.375909</code></pre>
+##  4.788636 30.698182</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># 95%: 2.5% 97.5%</span></a>
 <a class="sourceLine" id="cb50-2" title="2"><span class="kw">quantile</span>(boot.stat,<span class="kw">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>))</a></code></pre></div>
-<pre><code>##       2.5%      97.5% 
-##  0.7152273 31.5056818</code></pre>
+<pre><code>##      2.5%     97.5% 
+##  2.494318 32.974318</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># 99%:  0.5% 99.5%</span></a>
 <a class="sourceLine" id="cb52-2" title="2"><span class="kw">quantile</span>(boot.stat,<span class="kw">c</span>(<span class="fl">0.005</span>,<span class="fl">0.995</span>))</a></code></pre></div>
 <pre><code>##      0.5%     99.5% 
-## -2.705045 36.880045</code></pre>
+## -1.319545 37.790682</code></pre>
 </div>
 <div id="use-boot-for-correlation" class="section level2">
-<h2><span class="header-section-number">5.7</span> Use Boot for correlation</h2>
+<h2><span class="header-section-number">5.8</span> Use Boot for correlation</h2>
 <p>The following code is from: <a href="https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/" class="uri">https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/</a></p>
 <p>This page is for my own personal study purpose. Distribution is prohibited.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">data_correlation&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;data_correlation.csv&quot;</span>,<span class="dt">fileEncoding=</span><span class="st">&quot;UTF-8-BOM&quot;</span>)</a>
@@ -479,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 0.7763745</code></pre>
 </div>
 <div id="use-r-for-mediation" class="section level2">
-<h2><span class="header-section-number">5.8</span> Use R for mediation</h2>
+<h2><span class="header-section-number">5.9</span> Use R for mediation</h2>
 <p><a href="https://advstats.psychstat.org/book/mediation/index.php" class="uri">https://advstats.psychstat.org/book/mediation/index.php</a></p>
 
 </div>
