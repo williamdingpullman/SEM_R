@@ -2,6 +2,12 @@
 
 ## Introduction 
 
+__Warning:__
+
+__This page is for my own personal study purpose. Distribution is prohibited.__
+
+
+
 The following note is made when I was studying Bret Larget's note posted online.
 http://pages.stat.wisc.edu/~larget/stat302/chap3.pdf
 
@@ -193,3 +199,26 @@ quantile(boot.stat,c(0.025,0.975))
 quantile(boot.stat,c(0.005,0.995))
 
 ```
+
+
+## Use Boot for correlation 
+
+The following code is from: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
+
+This page is for my own personal study purpose. Distribution is prohibited.
+
+
+```{R}
+data_correlation<-read.csv("data_correlation.csv",fileEncoding="UTF-8-BOM")
+
+data_correlation
+
+```
+
+
+
+```{R}
+cor.test(data_correlation$LSAT,data_correlation$GPA)
+```
+## Use R for mediation
+https://advstats.psychstat.org/book/mediation/index.php
