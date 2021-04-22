@@ -138,3 +138,56 @@ reeses.boot = boot.mean(reeses, 1000, binwidth = 0.005)
 
 After having a basic idea of boostrapping, we can then use the package of boot.
 
+```{R}
+library(boot)
+
+data(CommuteAtlanta)
+
+my.mean = function(x, indices)
+{
+return( mean( x[indices] ) )
+}
+
+time.boot = boot(CommuteAtlanta$Time, my.mean, 10000)
+
+boot.ci(time.boot)
+```
+
+## Concept of Percentile
+
+```{R}
+require(Lock5Data)
+data(ImmuneTea)
+tea = with(ImmuneTea, InterferonGamma[Drink=="Tea"])
+coffee = with(ImmuneTea, InterferonGamma[Drink=="Coffee"])
+tea.mean = mean(tea)
+coffee.mean = mean(coffee)
+tea.n = length(tea)
+coffee.n = length(coffee)
+
+
+
+B = 500
+# create empty arrays for the means of each sample
+tea.boot = numeric(B)
+coffee.boot = numeric(B)
+# Use a for loop to take the samples
+for ( i in 1:B )
+  {
+tea.boot[i] = mean(sample(tea,size=tea.n,replace=TRUE))
+coffee.boot[i] = mean(sample(coffee,size=coffee.n,replace=TRUE))
+}
+
+boot.stat = tea.boot - coffee.boot
+boot.stat
+# Find endpoints for 90%, 95%, and 99% bootstrap confidence intervals using percentiles.
+quantile(boot.stat,c(0.05,0.95))
+## 5% 95%
+## 4.018 29.764
+quantile(boot.stat,c(0.025,0.975))
+## 2.5% 97.5%
+## 1.491 32.045
+quantile(boot.stat,c(0.005,0.995))
+## 0.5% 99.5%
+## -3.745 36.264
+```

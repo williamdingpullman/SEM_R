@@ -23,3 +23,4 @@
 \contentsline {section}{\numberline {5.3}Sample function}{20}{section.5.3}% 
 \contentsline {section}{\numberline {5.4}Proportion}{21}{section.5.4}% 
 \contentsline {section}{\numberline {5.5}boot package}{22}{section.5.5}% 
+\contentsline {section}{\numberline {5.6}Concept of Percentile}{23}{section.5.6}% 

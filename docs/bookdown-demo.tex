@@ -510,7 +510,7 @@ We can then plot all the means.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.870459
+## [1] 0.9314434
 \end{verbatim}
 
 \begin{Shaded}
@@ -521,7 +521,7 @@ We can then plot all the means.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.8
+## [1] 1.9
 \end{verbatim}
 
 \begin{Shaded}
@@ -531,7 +531,7 @@ We can then plot all the means.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 27.3 30.9
+## [1] 27.2 31.0
 \end{verbatim}
 
 \hypertarget{normal-distribution-sd-se}{%
@@ -575,7 +575,7 @@ Note that, in the following, the author used 2 times SE to calculate the CI. The
 \includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \begin{verbatim}
-## [1] 16.97816 19.33384
+## [1] 16.9017 19.4103
 \end{verbatim}
 
 \hypertarget{sample-function}{%
@@ -590,7 +590,7 @@ To understand the function of sample in R.
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] 20 13  8 18 16  4  3 18  5 19  8  4 15 13 14  3 20 15 15  7
+##  [1] 18 13  1  6 12 17  6 20 13 14  3 16 13 14  6  7  8  5  3 19
 \end{verbatim}
 
 The following uses loop to do the resampling. It uses sample function to index the numbers that they want to sample from the original sample. That is, {[}{]} suggests the indexing.
@@ -611,7 +611,7 @@ The following uses loop to do the resampling. It uses sample function to index t
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 16.91138 19.40062
+## [1] 16.93181 19.38019
 \end{verbatim}
 
 \hypertarget{proportion}{%
@@ -629,7 +629,7 @@ So far, we have dealed with means. How about porpotions?Remember that, when calc
 \includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-14-1.pdf}
 
 \begin{verbatim}
-## [1] 0.1948709 0.5384625
+## [1] 0.1932585 0.5400748
 \end{verbatim}
 
 However, if we have 48 students (i.e., 48 observations) and thus we have a bigger sample. However, how can we do re-sampling? Based on the note, it is kind of simple. They group them together and then resample from it. Note that, when they re-sampling, the programming do not distinguish the difference between 48 observations. But just combined them as a single column (741+699=1440), and then generate a very long column (1440 times 1000) and then reshape it into a matrix (1440 time 1000). This is the basic logic of the boot.mean function.
@@ -644,13 +644,231 @@ However, if we have 48 students (i.e., 48 observations) and thus we have a bigge
 \includegraphics{bookdown-demo_files/figure-latex/unnamed-chunk-15-1.pdf}
 
 \begin{verbatim}
-## [1] 0.4872704 0.5418963
+## [1] 0.4878630 0.5413037
 \end{verbatim}
 
 \hypertarget{boot-package}{%
 \section{boot package}\label{boot-package}}
 
 After having a basic idea of boostrapping, we can then use the package of boot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(boot)}
+
+\KeywordTok{data}\NormalTok{(CommuteAtlanta)}
+
+\NormalTok{my.mean =}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, indices)}
+\NormalTok{\{}
+\KeywordTok{return}\NormalTok{( }\KeywordTok{mean}\NormalTok{( x[indices] ) )}
+\NormalTok{\}}
+
+\NormalTok{time.boot =}\StringTok{ }\KeywordTok{boot}\NormalTok{(CommuteAtlanta}\OperatorTok{$}\NormalTok{Time, my.mean, }\DecValTok{10000}\NormalTok{)}
+
+\KeywordTok{boot.ci}\NormalTok{(time.boot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in boot.ci(time.boot): bootstrap variances needed for studentized
+## intervals
+\end{verbatim}
+
+\begin{verbatim}
+## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+## Based on 10000 bootstrap replicates
+## 
+## CALL : 
+## boot.ci(boot.out = time.boot)
+## 
+## Intervals : 
+## Level      Normal              Basic         
+## 95%   (27.32, 30.94 )   (27.27, 30.92 )  
+## 
+## Level     Percentile            BCa          
+## 95%   (27.30, 30.95 )   (27.43, 31.08 )  
+## Calculations and Intervals on Original Scale
+\end{verbatim}
+
+\hypertarget{concept-of-percentile}{%
+\section{Concept of Percentile}\label{concept-of-percentile}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{(Lock5Data)}
+\KeywordTok{data}\NormalTok{(ImmuneTea)}
+\NormalTok{tea =}\StringTok{ }\KeywordTok{with}\NormalTok{(ImmuneTea, InterferonGamma[Drink}\OperatorTok{==}\StringTok{"Tea"}\NormalTok{])}
+\NormalTok{coffee =}\StringTok{ }\KeywordTok{with}\NormalTok{(ImmuneTea, InterferonGamma[Drink}\OperatorTok{==}\StringTok{"Coffee"}\NormalTok{])}
+\NormalTok{tea.mean =}\StringTok{ }\KeywordTok{mean}\NormalTok{(tea)}
+\NormalTok{coffee.mean =}\StringTok{ }\KeywordTok{mean}\NormalTok{(coffee)}
+\NormalTok{tea.n =}\StringTok{ }\KeywordTok{length}\NormalTok{(tea)}
+\NormalTok{coffee.n =}\StringTok{ }\KeywordTok{length}\NormalTok{(coffee)}
+
+
+
+\NormalTok{B =}\StringTok{ }\DecValTok{500}
+\CommentTok{# create empty arrays for the means of each sample}
+\NormalTok{tea.boot =}\StringTok{ }\KeywordTok{numeric}\NormalTok{(B)}
+\NormalTok{coffee.boot =}\StringTok{ }\KeywordTok{numeric}\NormalTok{(B)}
+\CommentTok{# Use a for loop to take the samples}
+\ControlFlowTok{for}\NormalTok{ ( i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{B )}
+\NormalTok{  \{}
+\NormalTok{tea.boot[i] =}\StringTok{ }\KeywordTok{mean}\NormalTok{(}\KeywordTok{sample}\NormalTok{(tea,}\DataTypeTok{size=}\NormalTok{tea.n,}\DataTypeTok{replace=}\OtherTok{TRUE}\NormalTok{))}
+\NormalTok{coffee.boot[i] =}\StringTok{ }\KeywordTok{mean}\NormalTok{(}\KeywordTok{sample}\NormalTok{(coffee,}\DataTypeTok{size=}\NormalTok{coffee.n,}\DataTypeTok{replace=}\OtherTok{TRUE}\NormalTok{))}
+\NormalTok{\}}
+
+\NormalTok{boot.stat =}\StringTok{ }\NormalTok{tea.boot }\OperatorTok{-}\StringTok{ }\NormalTok{coffee.boot}
+\NormalTok{boot.stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [1] 24.02727273 25.45454545 15.42727273 -2.61818182 12.07272727
+##   [6] 27.20000000 10.10000000 15.41818182 14.44545455 23.78181818
+##  [11] 17.87272727  8.22727273 12.50000000 14.44545455 19.47272727
+##  [16] 19.67272727 25.90000000  6.18181818 18.94545455  7.74545455
+##  [21] 24.21818182 17.00000000 23.30000000 24.38181818 22.42727273
+##  [26] 25.35454545 17.06363636 25.25454545 25.15454545 14.32727273
+##  [31] 19.00000000 21.32727273 -2.91818182 12.23636364 23.87272727
+##  [36] 25.46363636 17.51818182 28.95454545 10.14545455  1.67272727
+##  [41] 20.54545455  5.65454545 16.84545455 17.98181818  1.83636364
+##  [46]  9.27272727 10.36363636 20.17272727  9.85454545 21.41818182
+##  [51]  6.98181818 17.65454545 29.27272727 13.59090909  4.84545455
+##  [56] 22.51818182 22.61818182  5.90909091 15.94545455 11.86363636
+##  [61] 17.10000000 34.44545455 20.09090909 24.37272727 28.26363636
+##  [66] 17.98181818 -0.11818182 22.29090909 20.10000000 26.70000000
+##  [71]  8.96363636 35.70909091 15.51818182 11.20909091 17.92727273
+##  [76] 24.50000000 19.14545455 15.13636364  6.21818182 29.79090909
+##  [81] 30.24545455 14.22727273 18.97272727 20.16363636 16.60909091
+##  [86]  0.54545455 16.48181818 23.68181818 25.90909091 19.94545455
+##  [91]  7.39090909 14.41818182 24.80909091 13.55454545 14.31818182
+##  [96] 25.95454545 19.58181818 17.41818182 14.26363636  5.80909091
+## [101] 17.72727273  8.67272727 14.75454545 21.82727273 20.17272727
+## [106] 18.29090909 16.74545455 26.33636364 15.35454545 33.80000000
+## [111] 35.73636364 20.72727273 26.57272727 20.73636364 13.10000000
+## [116]  0.39090909 14.14545455 10.28181818 19.92727273 23.46363636
+## [121]  9.37272727  9.46363636 22.00000000 16.95454545 25.42727273
+## [126] 20.84545455 21.52727273 22.04545455  8.03636364 11.28181818
+## [131]  1.49090909 17.52727273 14.13636364  8.07272727 12.93636364
+## [136] 17.99090909 15.49090909 19.09090909 14.28181818 14.66363636
+## [141] 18.87272727 20.48181818 23.48181818 28.79090909 26.57272727
+## [146] 32.01818182  9.05454545 24.46363636 15.25454545 12.76363636
+## [151] 13.32727273 30.20000000  7.98181818  8.20909091 14.96363636
+## [156] 20.30909091 19.21818182 20.21818182 13.43636364 34.29090909
+## [161] 26.50909091 26.68181818 15.61818182 22.28181818  3.82727273
+## [166] 23.03636364 10.10909091 13.53636364 22.66363636 16.70000000
+## [171] 19.39090909 21.13636364 15.81818182 22.84545455 10.34545455
+## [176] 22.45454545 15.37272727 22.16363636  9.97272727 26.08181818
+## [181] 20.86363636 13.27272727 21.22727273 25.43636364 22.77272727
+## [186] 18.57272727  7.74545455 26.30909091 12.36363636 15.12727273
+## [191] 19.95454545 21.59090909 20.63636364  4.41818182 10.20909091
+## [196]  7.91818182 22.30909091 21.95454545 11.10909091 14.61818182
+## [201] 36.58181818  8.44545455 17.06363636 16.04545455 24.45454545
+## [206] 30.05454545 19.15454545 20.30909091 10.41818182 29.26363636
+## [211] 24.84545455  9.69090909 10.50909091 14.20000000  7.21818182
+## [216]  8.29090909 16.29090909 32.12727273 25.42727273 -5.68181818
+## [221] -2.35454545 22.30000000 20.36363636 16.35454545  6.45454545
+## [226] 21.28181818 17.01818182 20.82727273 17.66363636 11.31818182
+## [231] 10.10909091 19.20000000 12.98181818 21.85454545  3.37272727
+## [236] -1.94545455 14.60000000  8.10909091 21.19090909 21.63636364
+## [241] 15.41818182 19.28181818 19.59090909 18.35454545 17.06363636
+## [246] 26.26363636 23.90909091 21.83636364 12.52727273 28.07272727
+## [251] 19.50909091 15.18181818 19.06363636 33.19090909 17.28181818
+## [256] 11.65454545 11.25454545 25.20909091 24.50000000 10.76363636
+## [261] 28.44545455 13.52727273 13.93636364 10.39090909 18.39090909
+## [266] 16.40909091  9.24545455 11.66363636  2.45454545 10.94545455
+## [271] 28.79090909 23.05454545 11.45454545 20.04545455  3.23636364
+## [276] 12.30909091  0.01818182 20.27272727 32.25454545 17.60909091
+## [281] 16.93636364 19.10000000  5.29090909 24.18181818 20.97272727
+## [286] 15.04545455 33.11818182 28.00000000  6.37272727 22.07272727
+## [291] 25.01818182 22.24545455 14.76363636 24.87272727 11.43636364
+## [296] 10.40909091 12.02727273 20.49090909 18.60000000  6.00909091
+## [301]  9.00909091 23.51818182 23.46363636  5.76363636 24.66363636
+## [306] 17.03636364 12.26363636 16.66363636 20.62727273 10.30909091
+## [311] 21.82727273 20.62727273 13.13636364 14.05454545 22.02727273
+## [316] 16.46363636 30.43636364 12.00000000 20.57272727 18.10000000
+## [321] 20.89090909 11.31818182 20.94545455 24.31818182 15.60909091
+## [326] 17.86363636  9.48181818 17.33636364 19.27272727 16.52727273
+## [331] 19.30909091 -0.28181818 12.81818182 16.84545455 12.53636364
+## [336] 12.32727273 25.85454545 13.21818182  7.98181818 11.71818182
+## [341] 18.40909091 32.07272727 10.51818182 14.04545455 17.83636364
+## [346] 11.60909091 14.54545455 11.66363636  9.91818182  6.19090909
+## [351] 32.59090909 29.75454545 22.60000000 23.34545455 12.83636364
+## [356] 17.04545455 17.00909091  6.68181818 18.89090909 17.00000000
+## [361] 11.91818182 13.30909091 19.70000000 14.60909091 17.14545455
+## [366]  4.19090909 17.20000000 18.32727273 18.94545455 16.79090909
+## [371] 17.04545455 11.20000000 18.25454545 15.86363636 23.03636364
+## [376] 33.24545455 20.66363636  5.52727273 24.58181818  9.16363636
+## [381]  8.20909091 16.97272727 17.92727273 17.48181818 21.70000000
+## [386] 14.51818182 11.31818182  8.10000000 25.50909091 22.03636364
+## [391]  4.44545455 13.39090909 19.16363636 14.67272727 12.57272727
+## [396] 29.89090909 26.90909091 10.91818182  0.32727273 14.56363636
+## [401] 11.58181818  2.99090909 11.92727273 28.12727273 16.45454545
+## [406] 16.30000000  4.17272727 15.93636364 21.71818182 21.54545455
+## [411] 12.73636364 26.32727273 27.94545455 18.46363636 -0.45454545
+## [416]  9.94545455 17.02727273  8.22727273 25.02727273 18.00000000
+## [421] 15.01818182  0.38181818 10.92727273 15.08181818 10.60000000
+## [426] 31.80909091 19.00909091 27.84545455 14.04545455 13.49090909
+## [431] 11.59090909 18.90000000 -2.78181818 15.34545455  8.17272727
+## [436]  9.05454545 15.29090909 17.29090909 32.28181818 12.53636364
+## [441] 21.38181818  1.39090909 -2.77272727 22.58181818  7.54545455
+## [446]  8.28181818 10.93636364 12.09090909 18.38181818 27.18181818
+## [451] 15.49090909 28.30909091 23.50909091  4.46363636 31.90909091
+## [456] 12.90909091 -1.03636364 26.44545455 18.28181818 14.50000000
+## [461] 21.79090909 10.33636364 18.64545455 17.12727273  9.56363636
+## [466] 24.63636364 11.20000000 19.45454545 11.25454545  7.53636364
+## [471]  0.47272727 10.61818182 20.32727273 24.42727273 15.70909091
+## [476] 26.76363636 22.04545455 -2.32727273 15.68181818 17.85454545
+## [481] 20.10000000 22.48181818 20.71818182 20.43636364  7.96363636
+## [486]  9.21818182  8.31818182 22.00909091  1.25454545 16.91818182
+## [491]  8.80000000 18.21818182 24.51818182  8.46363636  7.04545455
+## [496]  9.67272727 20.23636364 12.31818182 21.88181818 20.74545455
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Find endpoints for 90%, 95%, and 99% bootstrap confidence intervals using percentiles.}
+\KeywordTok{quantile}\NormalTok{(boot.stat,}\KeywordTok{c}\NormalTok{(}\FloatTok{0.05}\NormalTok{,}\FloatTok{0.95}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        5%       95% 
+##  3.224091 29.264091
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## 5% 95%}
+\CommentTok{## 4.018 29.764}
+\KeywordTok{quantile}\NormalTok{(boot.stat,}\KeywordTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{,}\FloatTok{0.975}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     2.5%    97.5% 
+##  0.16500 32.10136
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## 2.5% 97.5%}
+\CommentTok{## 1.491 32.045}
+\KeywordTok{quantile}\NormalTok{(boot.stat,}\KeywordTok{c}\NormalTok{(}\FloatTok{0.005}\NormalTok{,}\FloatTok{0.995}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      0.5%     99.5% 
+## -2.777318 35.083591
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## 0.5% 99.5%}
+\CommentTok{## -3.745 36.264}
+\end{Highlighting}
+\end{Shaded}
 
 \bibliography{book.bib,packages.bib}
 
