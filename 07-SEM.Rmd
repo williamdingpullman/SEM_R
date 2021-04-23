@@ -203,11 +203,10 @@ quantile(boot.stat,c(0.005,0.995))
 ```
 
 
-## Use Boot for correlation 
+## Bootstrapping for correlation interval
 
-The following code is from: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
+Some data and code are from: https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
 
-This page is for my own personal study purpose. Distribution is prohibited.
 
 
 ```{R}
@@ -217,10 +216,73 @@ data_correlation
 
 ```
 
-
-
 ```{R}
 cor.test(data_correlation$LSAT,data_correlation$GPA)
 ```
+
+In the following, I will write my own code to execute the bootstrapping. I set the bootstrapping number only 500, for illustrative purposes. As we can see, the distribution is not symmetrical. 
+
+As we can see, the quantile result and c(-1, 1) X 2 are not the same, as the latter assumes symmetrical distribution. However, based on the histogram, we know it is not the case. Thus, quantile would be more appropriate. You can compare the result with that from the boot function.
+
+```{R}
+n_row = nrow(data_correlation)
+n_row
+
+set.seed(12345)
+
+B = 500
+result = rep(NA, B)
+for (i in 1:B)
+{
+boot.sample = sample(n_row, replace = TRUE)
+result_temp = cor.test(data_correlation[boot.sample,]$LSAT,data_correlation[boot.sample,]$GPA)
+result[i]=result_temp$estimate
+}
+hist(result)
+
+# 95%: 2.5% 97.5%
+quantile(result,c(0.025,0.975))
+
+sd(result)
+
+mean(result) + c(-1, 1) * 1.96 * sd(result)
+
+cor(data_correlation$LSAT,data_correlation$GPA)
+cor(data_correlation$LSAT,data_correlation$GPA)+ c(-1, 1) * 1.96 * sd(result)
+
+
+# why add 0.005? Not sure. The following is from the webpage. Later note: please refer to the webpage, as it provides the logic of basic interval.
+
+0.776+0.005+c(-1, 1) * 1.96 * 0.131
+```
+
+In the blog mentioned above, the author used the boot function in R. For the logic of basic interval, please refer to:
+https://blog.methodsconsultants.com/posts/understanding-bootstrap-confidence-interval-output-from-the-r-boot-package/
+
+
+```{R}
+library(boot)
+
+get_r <- function(data, indices, x, y) {
+  d <- data[indices, ]
+  r <- round(as.numeric(cor(d[x], d[y])), 3)
+  r}
+
+set.seed(12345)
+
+boot_out <- boot(
+  data_correlation,
+  x = "LSAT", 
+  y = "GPA", 
+  R = 500,
+  statistic = get_r
+)
+
+boot.ci(boot_out)
+
+```
+
+
+
 ## Use R for mediation
 https://advstats.psychstat.org/book/mediation/index.php

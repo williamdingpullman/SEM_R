@@ -25,5 +25,5 @@
 \contentsline {section}{\numberline {5.5}Proportion}{21}{section.5.5}% 
 \contentsline {section}{\numberline {5.6}boot package}{22}{section.5.6}% 
 \contentsline {section}{\numberline {5.7}Concept of Percentile}{23}{section.5.7}% 
-\contentsline {section}{\numberline {5.8}Use Boot for correlation}{26}{section.5.8}% 
-\contentsline {section}{\numberline {5.9}Use R for mediation}{27}{section.5.9}% 
+\contentsline {section}{\numberline {5.8}Bootstrapping for correlation interval}{26}{section.5.8}% 
+\contentsline {section}{\numberline {5.9}Use R for mediation}{29}{section.5.9}% 
