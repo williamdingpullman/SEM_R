@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Real data example (Simple linear regression) | SEM and R</title>
+  <title>Chapter 6 Poisson Regression | SEM and R</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Real data example (Simple linear regression) | SEM and R" />
+  <meta property="og:title" content="Chapter 6 Poisson Regression | SEM and R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Real data example (Simple linear regression) | SEM and R" />
+  <meta name="twitter:title" content="Chapter 6 Poisson Regression | SEM and R" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="intro.html"/>
-<link rel="next" href="real-data-example-multiple-linear-regression.html"/>
+<link rel="prev" href="bootstrapping.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -186,94 +186,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="real-data-example-simple-linear-regression" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Real data example (Simple linear regression)</h1>
-<div id="read-the-data-into-the-r-studio-environment." class="section level2">
-<h2><span class="header-section-number">3.1</span> Read the data into the R Studio environment.</h2>
-<p>It also calcuates the covariance matrix among all the variables in the data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://stats.idre.ucla.edu/wp-content/uploads/2021/02/worland5.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">cov</span>(dat)</a></code></pre></div>
-<pre><code>##        motiv harm stabi ppsych ses verbal read arith spell
-## motiv    100   77    59    -25  25     32   53    60    59
-## harm      77  100    58    -25  26     25   42    44    45
-## stabi     59   58   100    -16  18     27   36    38    38
-## ppsych   -25  -25   -16    100 -42    -40  -39   -24   -31
-## ses       25   26    18    -42 100     40   43    37    33
-## verbal    32   25    27    -40  40    100   56    49    48
-## read      53   42    36    -39  43     56  100    73    87
-## arith     60   44    38    -24  37     49   73   100    72
-## spell     59   45    38    -31  33     48   87    72   100</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">var</span>(dat<span class="op">$</span>motiv)</a></code></pre></div>
-<pre><code>## [1] 100</code></pre>
-<p>In the following, we conduct a simple linear regression.
-<span class="math display">\[sample \ variance-covariance \ matrix \hat{\sum} = \mathbf{S} \]</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">m1a &lt;-<span class="st"> </span><span class="kw">lm</span>(read <span class="op">~</span><span class="st"> </span>motiv, <span class="dt">data=</span>dat)</a>
-<a class="sourceLine" id="cb5-2" title="2">(fit1a &lt;-<span class="kw">summary</span>(m1a))</a></code></pre></div>
+<div id="poisson-regression" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Poisson Regression</h1>
+<p>There are some other sources of website</p>
+<p><a href="https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd" class="uri">https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd</a></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">fHH1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb76-2" title="2"></a>
+<a class="sourceLine" id="cb76-3" title="3"><span class="kw">head</span>(fHH1)</a></code></pre></div>
+<pre><code>##   X     location age total numLT5                          roof
+## 1 1 CentralLuzon  65     0      0 Predominantly Strong Material
+## 2 2  MetroManila  75     3      0 Predominantly Strong Material
+## 3 3  DavaoRegion  54     4      0 Predominantly Strong Material
+## 4 4      Visayas  49     3      0 Predominantly Strong Material
+## 5 5  MetroManila  74     3      0 Predominantly Strong Material
+## 6 6      Visayas  59     6      0 Predominantly Strong Material</code></pre>
+<p><span class="math display">\[log (\lambda_X) =\beta_0+\beta_1 X\]</span>
+<span class="math display">\[log (\lambda_{X+1}) =\beta_0+\beta_1 (X+1)\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[log (\lambda_{X+1})-log (\lambda_X) =(\beta_0+\beta_1 (X+1))-(\beta_0+\beta_1 X)\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[log (\frac{\lambda_{X+1}}{\lambda_X}) =\beta_1\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\]</span></p>
+<p>Note that, <span class="math inline">\(\lambda\)</span> here is the mean. It is poisson regression, and the parameter is the mean. Thus, <span class="math inline">\(\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\)</span> suggests the ratio change in the DV as the IV change in one unit.</p>
+<p><span class="math display">\[log (\hat{\lambda}) =b_0+b_1 Age\]</span></p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">result_<span class="dv">1</span> =<span class="st"> </span><span class="kw">glm</span>(total <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> fHH1)</a>
+<a class="sourceLine" id="cb78-2" title="2">result_<span class="dv">1</span></a></code></pre></div>
 <pre><code>## 
-## Call:
-## lm(formula = read ~ motiv, data = dat)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -26.0995  -6.1109   0.2342   5.2237  24.0183 
+## Call:  glm(formula = total ~ age, family = poisson, data = fHH1)
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1.232e-07  3.796e-01    0.00        1    
-## motiv        5.300e-01  3.800e-02   13.95   &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Intercept)          age  
+##    1.549942    -0.004706  
 ## 
-## Residual standard error: 8.488 on 498 degrees of freedom
-## Multiple R-squared:  0.2809, Adjusted R-squared:  0.2795 
-## F-statistic: 194.5 on 1 and 498 DF,  p-value: &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">library</span>(lavaan)</a></code></pre></div>
-<pre><code>## Warning: package &#39;lavaan&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## This is lavaan 0.6-8
-## lavaan is FREE software! Please report any bugs.</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#simple regression using lavaan </span></a>
-<a class="sourceLine" id="cb10-2" title="2">m1b &lt;-<span class="st">   &#39;</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="st">  # regressions</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">    read ~ 1+ motiv</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="st">  # variance (optional)</span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="st">    motiv ~~ motiv</span></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="st">&#39;</span></a>
-<a class="sourceLine" id="cb10-8" title="8"></a>
-<a class="sourceLine" id="cb10-9" title="9">fit1b &lt;-<span class="st"> </span><span class="kw">sem</span>(m1b, <span class="dt">data=</span>dat)</a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="kw">summary</span>(fit1b)</a></code></pre></div>
-<pre><code>## lavaan 0.6-8 ended normally after 14 iterations
-## 
-##   Estimator                                         ML
-##   Optimization method                           NLMINB
-##   Number of model parameters                         5
-##                                                       
-##   Number of observations                           500
-##                                                       
-## Model Test User Model:
-##                                                       
-##   Test statistic                                 0.000
-##   Degrees of freedom                                 0
-## 
-## Parameter Estimates:
-## 
-##   Standard errors                             Standard
-##   Information                                 Expected
-##   Information saturated (h1) model          Structured
-## 
-## Regressions:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##   read ~                                              
-##     motiv             0.530    0.038   13.975    0.000
-## 
-## Intercepts:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##    .read             -0.000    0.379   -0.000    1.000
-##     motiv             0.000    0.447    0.000    1.000
-## 
-## Variances:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##     motiv            99.800    6.312   15.811    0.000
-##    .read             71.766    4.539   15.811    0.000</code></pre>
+## Degrees of Freedom: 1499 Total (i.e. Null);  1498 Residual
+## Null Deviance:       2362 
+## Residual Deviance: 2337  AIC: 6714</code></pre>
+<p><span class="math display">\[\frac{\lambda_{Age+1}}{\lambda_{Age}} =e^{\beta_1}=e^{-0.0047}=0.995\]</span></p>
+<p>But, what does it mean? It is a bit tricky. But, we can make some modification to help us understand.</p>
+<p><span class="math display">\[\lambda_{Age+1} =0.995 \lambda_{Age}\]</span>
+<span class="math display">\[\lambda_{Age+1} - \lambda_{Age}=0.995 \lambda_{Age}- \lambda_{Age}=-0.005 \lambda_{Age}\]</span>
+Thus, we can understand that, the mean of household size difference by changing 1 unit of age (i.e., <span class="math inline">\(\lambda_{Age+1} - \lambda_{Age}\)</span>) is <span class="math inline">\(-0.005 \lambda_{Age}\)</span>.</p>
+<div id="use-r-for-mediation" class="section level2">
+<h2><span class="header-section-number">6.1</span> Use R for mediation</h2>
+<p><a href="https://advstats.psychstat.org/book/mediation/index.php" class="uri">https://advstats.psychstat.org/book/mediation/index.php</a></p>
+
 </div>
 </div>
             </section>
@@ -281,8 +238,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="real-data-example-multiple-linear-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bootstrapping.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

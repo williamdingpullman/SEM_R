@@ -282,6 +282,52 @@ boot.ci(boot_out)
 
 ```
 
+# Poisson Regression
+
+
+There are some other sources of website
+
+https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd
+
+```{R}
+fHH1 <- read.csv("https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv")
+
+head(fHH1)
+```
+
+$$log (\lambda_X) =\beta_0+\beta_1 X$$
+$$log (\lambda_{X+1}) =\beta_0+\beta_1 (X+1)$$
+
+Thus,
+
+$$log (\lambda_{X+1})-log (\lambda_X) =(\beta_0+\beta_1 (X+1))-(\beta_0+\beta_1 X)$$
+
+Thus,
+
+$$log (\frac{\lambda_{X+1}}{\lambda_X}) =\beta_1$$
+
+Thus,
+
+$$\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}$$
+
+Note that, $\lambda$ here is the mean. It is poisson regression, and the parameter is the mean. Thus, $\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}$ suggests the ratio change in the DV as the IV change in one unit. 
+
+$$log (\hat{\lambda}) =b_0+b_1 Age$$
+
+```{R}
+result_1 = glm(total ~ age, family = poisson, data = fHH1)
+result_1
+```
+
+$$\frac{\lambda_{Age+1}}{\lambda_{Age}} =e^{\beta_1}=e^{-0.0047}=0.995$$
+
+
+But, what does it mean? It is a bit tricky. But, we can make some modification to help us understand.
+
+$$\lambda_{Age+1} =0.995 \lambda_{Age}$$
+$$\lambda_{Age+1} - \lambda_{Age}=0.995 \lambda_{Age}- \lambda_{Age}=-0.005 \lambda_{Age}$$
+Thus, we can understand that, the mean of household size difference by changing 1 unit of age (i.e., $\lambda_{Age+1} - \lambda_{Age}$) is $-0.005 \lambda_{Age}$.
+
 
 
 ## Use R for mediation

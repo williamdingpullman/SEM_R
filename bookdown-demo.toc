@@ -26,4 +26,5 @@
 \contentsline {section}{\numberline {5.6}boot package}{22}{section.5.6}% 
 \contentsline {section}{\numberline {5.7}Concept of Percentile}{23}{section.5.7}% 
 \contentsline {section}{\numberline {5.8}Bootstrapping for correlation interval}{26}{section.5.8}% 
-\contentsline {section}{\numberline {5.9}Use R for mediation}{29}{section.5.9}% 
+\contentsline {chapter}{\numberline {6}Poisson Regression}{31}{chapter.6}% 
+\contentsline {section}{\numberline {6.1}Use R for mediation}{32}{section.6.1}% 
