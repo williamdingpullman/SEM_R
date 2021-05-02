@@ -284,8 +284,11 @@ boot.ci(boot_out)
 
 # Poisson Regression
 
+## Basic idea
 
-There are some other sources of website
+The following is based on the lecture note of https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html
+
+There is also some R code related to this.
 
 https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd
 
@@ -316,7 +319,7 @@ $$log (\hat{\lambda}) =b_0+b_1 Age$$
 
 ```{R}
 result_1 = glm(total ~ age, family = poisson, data = fHH1)
-result_1
+summary(result_1)
 ```
 
 $$\frac{\lambda_{Age+1}}{\lambda_{Age}} =e^{\beta_1}=e^{-0.0047}=0.995$$
@@ -326,9 +329,51 @@ But, what does it mean? It is a bit tricky. But, we can make some modification t
 
 $$\lambda_{Age+1} =0.995 \lambda_{Age}$$
 $$\lambda_{Age+1} - \lambda_{Age}=0.995 \lambda_{Age}- \lambda_{Age}=-0.005 \lambda_{Age}$$
-Thus, we can understand that, the mean of household size difference by changing 1 unit of age (i.e., $\lambda_{Age+1} - \lambda_{Age}$) is $-0.005 \lambda_{Age}$.
+Thus, we can understand that, the difference in the household size mean by changing 1 unit of age (i.e., $\lambda_{Age+1} - \lambda_{Age}$) is $-0.005 \lambda_{Age}$.
+
+That is, the difference in the household size mean by changing 1 unit of age (i.e., $\lambda_{Age+1} - \lambda_{Age}$) is a decrease of 5% of $\lambda_{Age}$.
 
 
+We can then calculate the confidence interval.
 
-## Use R for mediation
+$$(\hat{\beta_1}-Z*SE(\hat{\beta_1}), \hat{\beta_1}+Z*SE(\hat{\beta_1}))$$
+
+$$(-0.0047-1.96*0.00094,-0.0047+1.96*0.00094)=(−0.0065,−0.0029)$$
+
+We can then plug them back to the exponential.
+
+
+```{R}
+exp(−0.0065)
+exp(−0.0029)
+```
+
+$$(e^{−0.0065},e^{−0.0029})=(0.9935,0.9971)$$
+
+
+You can also get the confidence interval directly use R code
+
+```{R}
+confint(result_1)
+exp(confint(result_1))
+```
+
+Note that, we use original beta to construct a confidence interval and then exponentiate the endpoints is due to the fact that the oringal one is more close to normal distribution. 
+
+
+## Trying to understand
+
+With $\hat{\beta_0} = 1.55$ and $\hat{\beta_1}=-0.005$, we can write down the following. I also simulated the data and showed the relationship between X and Y. As we can see the figure, the relationship is pretty linear. Thus, something to keep in mind, the poisson distribution we typically see is the histogram of Y, rather than the relationship between X and Y. 
+
+$$log(\hat{\lambda})=1.55-0.005 Age$$
+
+```{R}
+data_age<-seq(20,100,0.5)
+f_age<-function(x){exp(1.55-(0.005*x))}
+# cbind(data_age,f_age(data_age))
+plot(data_age,f_age(data_age))
+hist(f_age(data_age))
+```
+
+# Use R for mediation
 https://advstats.psychstat.org/book/mediation/index.php

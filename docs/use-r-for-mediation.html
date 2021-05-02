@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Poisson Regression | SEM and R</title>
+  <title>Chapter 7 Use R for mediation | SEM and R</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Poisson Regression | SEM and R" />
+  <meta property="og:title" content="Chapter 7 Use R for mediation | SEM and R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Poisson Regression | SEM and R" />
+  <meta name="twitter:title" content="Chapter 7 Use R for mediation | SEM and R" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="bootstrapping.html"/>
-<link rel="next" href="use-r-for-mediation.html"/>
+<link rel="prev" href="poisson-regression.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -188,105 +188,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="poisson-regression" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> Poisson Regression</h1>
-<div id="basic-idea" class="section level2">
-<h2><span class="header-section-number">6.1</span> Basic idea</h2>
-<p>The following is based on the lecture note of <a href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html" class="uri">https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html</a></p>
-<p>There is also some R code related to this.</p>
-<p><a href="https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd" class="uri">https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd</a></p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">fHH1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb76-2" title="2"></a>
-<a class="sourceLine" id="cb76-3" title="3"><span class="kw">head</span>(fHH1)</a></code></pre></div>
-<pre><code>##   X     location age total numLT5                          roof
-## 1 1 CentralLuzon  65     0      0 Predominantly Strong Material
-## 2 2  MetroManila  75     3      0 Predominantly Strong Material
-## 3 3  DavaoRegion  54     4      0 Predominantly Strong Material
-## 4 4      Visayas  49     3      0 Predominantly Strong Material
-## 5 5  MetroManila  74     3      0 Predominantly Strong Material
-## 6 6      Visayas  59     6      0 Predominantly Strong Material</code></pre>
-<p><span class="math display">\[log (\lambda_X) =\beta_0+\beta_1 X\]</span>
-<span class="math display">\[log (\lambda_{X+1}) =\beta_0+\beta_1 (X+1)\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[log (\lambda_{X+1})-log (\lambda_X) =(\beta_0+\beta_1 (X+1))-(\beta_0+\beta_1 X)\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[log (\frac{\lambda_{X+1}}{\lambda_X}) =\beta_1\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\]</span></p>
-<p>Note that, <span class="math inline">\(\lambda\)</span> here is the mean. It is poisson regression, and the parameter is the mean. Thus, <span class="math inline">\(\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\)</span> suggests the ratio change in the DV as the IV change in one unit.</p>
-<p><span class="math display">\[log (\hat{\lambda}) =b_0+b_1 Age\]</span></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">result_<span class="dv">1</span> =<span class="st"> </span><span class="kw">glm</span>(total <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> fHH1)</a>
-<a class="sourceLine" id="cb78-2" title="2"><span class="kw">summary</span>(result_<span class="dv">1</span>)</a></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = total ~ age, family = poisson, data = fHH1)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -2.9079  -0.9637  -0.2155   0.6092   4.9561  
-## 
-## Coefficients:
-##               Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  1.5499422  0.0502754  30.829  &lt; 2e-16 ***
-## age         -0.0047059  0.0009363  -5.026 5.01e-07 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for poisson family taken to be 1)
-## 
-##     Null deviance: 2362.5  on 1499  degrees of freedom
-## Residual deviance: 2337.1  on 1498  degrees of freedom
-## AIC: 6714
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<p><span class="math display">\[\frac{\lambda_{Age+1}}{\lambda_{Age}} =e^{\beta_1}=e^{-0.0047}=0.995\]</span></p>
-<p>But, what does it mean? It is a bit tricky. But, we can make some modification to help us understand.</p>
-<p><span class="math display">\[\lambda_{Age+1} =0.995 \lambda_{Age}\]</span>
-<span class="math display">\[\lambda_{Age+1} - \lambda_{Age}=0.995 \lambda_{Age}- \lambda_{Age}=-0.005 \lambda_{Age}\]</span>
-Thus, we can understand that, the difference in the household size mean by changing 1 unit of age (i.e., <span class="math inline">\(\lambda_{Age+1} - \lambda_{Age}\)</span>) is <span class="math inline">\(-0.005 \lambda_{Age}\)</span>.</p>
-<p>That is, the difference in the household size mean by changing 1 unit of age (i.e., <span class="math inline">\(\lambda_{Age+1} - \lambda_{Age}\)</span>) is a decrease of 5% of <span class="math inline">\(\lambda_{Age}\)</span>.</p>
-<p>We can then calculate the confidence interval.</p>
-<p><span class="math display">\[(\hat{\beta_1}-Z*SE(\hat{\beta_1}), \hat{\beta_1}+Z*SE(\hat{\beta_1}))\]</span></p>
-<p><span class="math display">\[(-0.0047-1.96*0.00094,-0.0047+1.96*0.00094)=(−0.0065,−0.0029)\]</span></p>
-<p>We can then plug them back to the exponential.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw">exp</span>(−<span class="fl">0.0065</span>)</a></code></pre></div>
-<pre><code>## [1] 0.9935211</code></pre>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="kw">exp</span>(−<span class="fl">0.0029</span>)</a></code></pre></div>
-<pre><code>## [1] 0.9971042</code></pre>
-<p><span class="math display">\[(e^{−0.0065},e^{−0.0029})=(0.9935,0.9971)\]</span></p>
-<p>You can also get the confidence interval directly use R code</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="kw">confint</span>(result_<span class="dv">1</span>)</a></code></pre></div>
-<pre><code>## Waiting for profiling to be done...</code></pre>
-<pre><code>##                    2.5 %       97.5 %
-## (Intercept)  1.451170100  1.648249185
-## age         -0.006543163 -0.002872717</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1"><span class="kw">exp</span>(<span class="kw">confint</span>(result_<span class="dv">1</span>))</a></code></pre></div>
-<pre><code>## Waiting for profiling to be done...</code></pre>
-<pre><code>##                 2.5 %    97.5 %
-## (Intercept) 4.2681057 5.1978713
-## age         0.9934782 0.9971314</code></pre>
-<p>Note that, we use original beta to construct a confidence interval and then exponentiate the endpoints is due to the fact that the oringal one is more close to normal distribution.</p>
-</div>
-<div id="trying-to-understand" class="section level2">
-<h2><span class="header-section-number">6.2</span> Trying to understand</h2>
-<p>With <span class="math inline">\(\hat{\beta_0} = 1.55\)</span> and <span class="math inline">\(\hat{\beta_1}=-0.005\)</span>, we can write down the following. I also simulated the data and showed the relationship between X and Y. As we can see the figure, the relationship is pretty linear. Thus, something to keep in mind, the poisson distribution we typically see is the histogram of Y, rather than the relationship between X and Y.</p>
-<p><span class="math display">\[log(\hat{\lambda})=1.55-0.005 Age\]</span></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">data_age&lt;-<span class="kw">seq</span>(<span class="dv">20</span>,<span class="dv">100</span>,<span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb90-2" title="2">f_age&lt;-<span class="cf">function</span>(x){<span class="kw">exp</span>(<span class="fl">1.55</span><span class="op">-</span>(<span class="fl">0.005</span><span class="op">*</span>x))}</a>
-<a class="sourceLine" id="cb90-3" title="3"><span class="co"># cbind(data_age,f_age(data_age))</span></a>
-<a class="sourceLine" id="cb90-4" title="4"><span class="kw">plot</span>(data_age,<span class="kw">f_age</span>(data_age))</a></code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1"><span class="kw">hist</span>(<span class="kw">f_age</span>(data_age))</a></code></pre></div>
-<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
-</div>
+<div id="use-r-for-mediation" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Use R for mediation</h1>
+<p><a href="https://advstats.psychstat.org/book/mediation/index.php" class="uri">https://advstats.psychstat.org/book/mediation/index.php</a></p>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="bootstrapping.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="use-r-for-mediation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="poisson-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
