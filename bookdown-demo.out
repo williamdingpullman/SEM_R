@@ -19,4 +19,6 @@
 \BOOKMARK [0][-]{chapter.6}{Poisson\040Regression}{}% 19
 \BOOKMARK [1][-]{section.6.1}{Basic\040idea}{chapter.6}% 20
 \BOOKMARK [1][-]{section.6.2}{Trying\040to\040understand}{chapter.6}% 21
-\BOOKMARK [0][-]{chapter.7}{Use\040R\040for\040mediation}{}% 22
+\BOOKMARK [1][-]{section.6.3}{Deviance}{chapter.6}% 22
+\BOOKMARK [1][-]{section.6.4}{Overdispersion\040\(using\040another\040example\)}{chapter.6}% 23
+\BOOKMARK [0][-]{chapter.7}{Use\040R\040for\040mediation}{}% 24

@@ -293,9 +293,9 @@ There is also some R code related to this.
 https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd
 
 ```{R}
-fHH1 <- read.csv("https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv")
+data_HH <- read.csv("https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv")
 
-head(fHH1)
+head(data_HH)
 ```
 
 $$log (\lambda_X) =\beta_0+\beta_1 X$$
@@ -318,7 +318,7 @@ Note that, $\lambda$ here is the mean. It is poisson regression, and the paramet
 $$log (\hat{\lambda}) =b_0+b_1 Age$$
 
 ```{R}
-result_1 = glm(total ~ age, family = poisson, data = fHH1)
+result_1 = glm(total ~ age, family = poisson, data = data_HH)
 summary(result_1)
 ```
 
@@ -366,14 +366,50 @@ Note that, we use original beta to construct a confidence interval and then expo
 With $\hat{\beta_0} = 1.55$ and $\hat{\beta_1}=-0.005$, we can write down the following. I also simulated the data and showed the relationship between X and Y. As we can see the figure, the relationship is pretty linear. Thus, something to keep in mind, the poisson distribution we typically see is the histogram of Y, rather than the relationship between X and Y. 
 
 $$log(\hat{\lambda})=1.55-0.005 Age$$
+$$\hat{\lambda}=e^{1.55-0.005 Age}$$
 
 ```{R}
-data_age<-seq(20,100,0.5)
+data_age<-seq(10,100,0.5)
 f_age<-function(x){exp(1.55-(0.005*x))}
-# cbind(data_age,f_age(data_age))
+cbind(data_age,f_age(data_age))
 plot(data_age,f_age(data_age))
 hist(f_age(data_age))
 ```
 
+## Deviance
+
+```{R}
+basic_model <- glm(total ~ 1, family = poisson, data = data_HH)
+deviance_1 <- anova(basic_model, result_1, test = "Chisq")
+deviance_1
+
+```
+
+## Overdispersion (using another example)
+
+```{R}
+data_edu<-read.csv("https://raw.githubusercontent.com/proback/BeyondMLR/master/data/c_data.csv")
+head(data_edu)
+```
+
+```{R}
+hist(data_edu$nv)
+```
+
+```{R}
+results_3<- glm(nv ~ type + region, family = poisson,
+               offset = log(enroll1000), data = data_edu)
+summary(results_3)
+```
+
+```{R}
+
+results_4 <- glm(nv ~ type + region, family = quasipoisson,
+               offset = log(enroll1000), data = data_edu)
+difference_dev <- anova(results_4, results_3, test = "F")
+difference_dev
+```
+
 # Use R for mediation
 https://advstats.psychstat.org/book/mediation/index.php
+https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html

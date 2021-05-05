@@ -24,7 +24,7 @@
 <meta name="author" content="Bill" />
 
 
-<meta name="date" content="2021-05-02" />
+<meta name="date" content="2021-05-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,6 +166,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="poisson-regression.html"><a href="poisson-regression.html"><i class="fa fa-check"></i><b>6</b> Poisson Regression</a><ul>
 <li class="chapter" data-level="6.1" data-path="poisson-regression.html"><a href="poisson-regression.html#basic-idea"><i class="fa fa-check"></i><b>6.1</b> Basic idea</a></li>
 <li class="chapter" data-level="6.2" data-path="poisson-regression.html"><a href="poisson-regression.html#trying-to-understand"><i class="fa fa-check"></i><b>6.2</b> Trying to understand</a></li>
+<li class="chapter" data-level="6.3" data-path="poisson-regression.html"><a href="poisson-regression.html#deviance"><i class="fa fa-check"></i><b>6.3</b> Deviance</a></li>
+<li class="chapter" data-level="6.4" data-path="poisson-regression.html"><a href="poisson-regression.html#overdispersion-using-another-example"><i class="fa fa-check"></i><b>6.4</b> Overdispersion (using another example)</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="use-r-for-mediation.html"><a href="use-r-for-mediation.html"><i class="fa fa-check"></i><b>7</b> Use R for mediation</a></li>
 <li class="divider"></li>
@@ -195,9 +197,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The following is based on the lecture note of <a href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html" class="uri">https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html</a></p>
 <p>There is also some R code related to this.</p>
 <p><a href="https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd" class="uri">https://rdrr.io/github/sta303-bolton/sta303w8/f/inst/rmarkdown/templates/philippines/skeleton/skeleton.Rmd</a></p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">fHH1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv&quot;</span>)</a>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1">data_HH &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/proback/BeyondMLR/master/data/fHH1.csv&quot;</span>)</a>
 <a class="sourceLine" id="cb76-2" title="2"></a>
-<a class="sourceLine" id="cb76-3" title="3"><span class="kw">head</span>(fHH1)</a></code></pre></div>
+<a class="sourceLine" id="cb76-3" title="3"><span class="kw">head</span>(data_HH)</a></code></pre></div>
 <pre><code>##   X     location age total numLT5                          roof
 ## 1 1 CentralLuzon  65     0      0 Predominantly Strong Material
 ## 2 2  MetroManila  75     3      0 Predominantly Strong Material
@@ -215,11 +217,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\]</span></p>
 <p>Note that, <span class="math inline">\(\lambda\)</span> here is the mean. It is poisson regression, and the parameter is the mean. Thus, <span class="math inline">\(\frac{\lambda_{X+1}}{\lambda_X} =e^{\beta_1}\)</span> suggests the ratio change in the DV as the IV change in one unit.</p>
 <p><span class="math display">\[log (\hat{\lambda}) =b_0+b_1 Age\]</span></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">result_<span class="dv">1</span> =<span class="st"> </span><span class="kw">glm</span>(total <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> fHH1)</a>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">result_<span class="dv">1</span> =<span class="st"> </span><span class="kw">glm</span>(total <span class="op">~</span><span class="st"> </span>age, <span class="dt">family =</span> poisson, <span class="dt">data =</span> data_HH)</a>
 <a class="sourceLine" id="cb78-2" title="2"><span class="kw">summary</span>(result_<span class="dv">1</span>)</a></code></pre></div>
 <pre><code>## 
 ## Call:
-## glm(formula = total ~ age, family = poisson, data = fHH1)
+## glm(formula = total ~ age, family = poisson, data = data_HH)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -270,14 +272,268 @@ Thus, we can understand that, the difference in the household size mean by chang
 <div id="trying-to-understand" class="section level2">
 <h2><span class="header-section-number">6.2</span> Trying to understand</h2>
 <p>With <span class="math inline">\(\hat{\beta_0} = 1.55\)</span> and <span class="math inline">\(\hat{\beta_1}=-0.005\)</span>, we can write down the following. I also simulated the data and showed the relationship between X and Y. As we can see the figure, the relationship is pretty linear. Thus, something to keep in mind, the poisson distribution we typically see is the histogram of Y, rather than the relationship between X and Y.</p>
-<p><span class="math display">\[log(\hat{\lambda})=1.55-0.005 Age\]</span></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">data_age&lt;-<span class="kw">seq</span>(<span class="dv">20</span>,<span class="dv">100</span>,<span class="fl">0.5</span>)</a>
+<p><span class="math display">\[log(\hat{\lambda})=1.55-0.005 Age\]</span>
+<span class="math display">\[\hat{\lambda}=e^{1.55-0.005 Age}\]</span></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">data_age&lt;-<span class="kw">seq</span>(<span class="dv">10</span>,<span class="dv">100</span>,<span class="fl">0.5</span>)</a>
 <a class="sourceLine" id="cb90-2" title="2">f_age&lt;-<span class="cf">function</span>(x){<span class="kw">exp</span>(<span class="fl">1.55</span><span class="op">-</span>(<span class="fl">0.005</span><span class="op">*</span>x))}</a>
-<a class="sourceLine" id="cb90-3" title="3"><span class="co"># cbind(data_age,f_age(data_age))</span></a>
-<a class="sourceLine" id="cb90-4" title="4"><span class="kw">plot</span>(data_age,<span class="kw">f_age</span>(data_age))</a></code></pre></div>
+<a class="sourceLine" id="cb90-3" title="3"><span class="kw">cbind</span>(data_age,<span class="kw">f_age</span>(data_age))</a></code></pre></div>
+<pre><code>##        data_age         
+##   [1,]     10.0 4.481689
+##   [2,]     10.5 4.470499
+##   [3,]     11.0 4.459337
+##   [4,]     11.5 4.448202
+##   [5,]     12.0 4.437096
+##   [6,]     12.5 4.426017
+##   [7,]     13.0 4.414965
+##   [8,]     13.5 4.403942
+##   [9,]     14.0 4.392946
+##  [10,]     14.5 4.381977
+##  [11,]     15.0 4.371036
+##  [12,]     15.5 4.360122
+##  [13,]     16.0 4.349235
+##  [14,]     16.5 4.338376
+##  [15,]     17.0 4.327543
+##  [16,]     17.5 4.316738
+##  [17,]     18.0 4.305960
+##  [18,]     18.5 4.295208
+##  [19,]     19.0 4.284483
+##  [20,]     19.5 4.273786
+##  [21,]     20.0 4.263115
+##  [22,]     20.5 4.252470
+##  [23,]     21.0 4.241852
+##  [24,]     21.5 4.231261
+##  [25,]     22.0 4.220696
+##  [26,]     22.5 4.210157
+##  [27,]     23.0 4.199645
+##  [28,]     23.5 4.189159
+##  [29,]     24.0 4.178699
+##  [30,]     24.5 4.168265
+##  [31,]     25.0 4.157858
+##  [32,]     25.5 4.147476
+##  [33,]     26.0 4.137120
+##  [34,]     26.5 4.126791
+##  [35,]     27.0 4.116486
+##  [36,]     27.5 4.106208
+##  [37,]     28.0 4.095955
+##  [38,]     28.5 4.085728
+##  [39,]     29.0 4.075527
+##  [40,]     29.5 4.065351
+##  [41,]     30.0 4.055200
+##  [42,]     30.5 4.045075
+##  [43,]     31.0 4.034975
+##  [44,]     31.5 4.024900
+##  [45,]     32.0 4.014850
+##  [46,]     32.5 4.004825
+##  [47,]     33.0 3.994826
+##  [48,]     33.5 3.984851
+##  [49,]     34.0 3.974902
+##  [50,]     34.5 3.964977
+##  [51,]     35.0 3.955077
+##  [52,]     35.5 3.945201
+##  [53,]     36.0 3.935351
+##  [54,]     36.5 3.925525
+##  [55,]     37.0 3.915723
+##  [56,]     37.5 3.905946
+##  [57,]     38.0 3.896193
+##  [58,]     38.5 3.886465
+##  [59,]     39.0 3.876761
+##  [60,]     39.5 3.867081
+##  [61,]     40.0 3.857426
+##  [62,]     40.5 3.847794
+##  [63,]     41.0 3.838187
+##  [64,]     41.5 3.828603
+##  [65,]     42.0 3.819044
+##  [66,]     42.5 3.809508
+##  [67,]     43.0 3.799996
+##  [68,]     43.5 3.790508
+##  [69,]     44.0 3.781043
+##  [70,]     44.5 3.771603
+##  [71,]     45.0 3.762185
+##  [72,]     45.5 3.752792
+##  [73,]     46.0 3.743421
+##  [74,]     46.5 3.734075
+##  [75,]     47.0 3.724751
+##  [76,]     47.5 3.715451
+##  [77,]     48.0 3.706174
+##  [78,]     48.5 3.696920
+##  [79,]     49.0 3.687689
+##  [80,]     49.5 3.678481
+##  [81,]     50.0 3.669297
+##  [82,]     50.5 3.660135
+##  [83,]     51.0 3.650996
+##  [84,]     51.5 3.641880
+##  [85,]     52.0 3.632787
+##  [86,]     52.5 3.623716
+##  [87,]     53.0 3.614668
+##  [88,]     53.5 3.605643
+##  [89,]     54.0 3.596640
+##  [90,]     54.5 3.587659
+##  [91,]     55.0 3.578701
+##  [92,]     55.5 3.569766
+##  [93,]     56.0 3.560853
+##  [94,]     56.5 3.551962
+##  [95,]     57.0 3.543093
+##  [96,]     57.5 3.534246
+##  [97,]     58.0 3.525421
+##  [98,]     58.5 3.516619
+##  [99,]     59.0 3.507838
+## [100,]     59.5 3.499080
+## [101,]     60.0 3.490343
+## [102,]     60.5 3.481628
+## [103,]     61.0 3.472935
+## [104,]     61.5 3.464263
+## [105,]     62.0 3.455613
+## [106,]     62.5 3.446985
+## [107,]     63.0 3.438379
+## [108,]     63.5 3.429793
+## [109,]     64.0 3.421230
+## [110,]     64.5 3.412687
+## [111,]     65.0 3.404166
+## [112,]     65.5 3.395666
+## [113,]     66.0 3.387188
+## [114,]     66.5 3.378730
+## [115,]     67.0 3.370294
+## [116,]     67.5 3.361879
+## [117,]     68.0 3.353485
+## [118,]     68.5 3.345111
+## [119,]     69.0 3.336759
+## [120,]     69.5 3.328428
+## [121,]     70.0 3.320117
+## [122,]     70.5 3.311827
+## [123,]     71.0 3.303558
+## [124,]     71.5 3.295309
+## [125,]     72.0 3.287081
+## [126,]     72.5 3.278874
+## [127,]     73.0 3.270687
+## [128,]     73.5 3.262520
+## [129,]     74.0 3.254374
+## [130,]     74.5 3.246248
+## [131,]     75.0 3.238143
+## [132,]     75.5 3.230058
+## [133,]     76.0 3.221993
+## [134,]     76.5 3.213948
+## [135,]     77.0 3.205923
+## [136,]     77.5 3.197918
+## [137,]     78.0 3.189933
+## [138,]     78.5 3.181968
+## [139,]     79.0 3.174023
+## [140,]     79.5 3.166098
+## [141,]     80.0 3.158193
+## [142,]     80.5 3.150307
+## [143,]     81.0 3.142441
+## [144,]     81.5 3.134595
+## [145,]     82.0 3.126768
+## [146,]     82.5 3.118961
+## [147,]     83.0 3.111174
+## [148,]     83.5 3.103405
+## [149,]     84.0 3.095657
+## [150,]     84.5 3.087927
+## [151,]     85.0 3.080217
+## [152,]     85.5 3.072526
+## [153,]     86.0 3.064854
+## [154,]     86.5 3.057202
+## [155,]     87.0 3.049568
+## [156,]     87.5 3.041954
+## [157,]     88.0 3.034358
+## [158,]     88.5 3.026782
+## [159,]     89.0 3.019224
+## [160,]     89.5 3.011686
+## [161,]     90.0 3.004166
+## [162,]     90.5 2.996665
+## [163,]     91.0 2.989183
+## [164,]     91.5 2.981719
+## [165,]     92.0 2.974274
+## [166,]     92.5 2.966848
+## [167,]     93.0 2.959440
+## [168,]     93.5 2.952050
+## [169,]     94.0 2.944680
+## [170,]     94.5 2.937327
+## [171,]     95.0 2.929993
+## [172,]     95.5 2.922677
+## [173,]     96.0 2.915379
+## [174,]     96.5 2.908100
+## [175,]     97.0 2.900839
+## [176,]     97.5 2.893596
+## [177,]     98.0 2.886371
+## [178,]     98.5 2.879164
+## [179,]     99.0 2.871975
+## [180,]     99.5 2.864804
+## [181,]    100.0 2.857651</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1"><span class="kw">plot</span>(data_age,<span class="kw">f_age</span>(data_age))</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1"><span class="kw">hist</span>(<span class="kw">f_age</span>(data_age))</a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1"><span class="kw">hist</span>(<span class="kw">f_age</span>(data_age))</a></code></pre></div>
 <p><img src="bookdown-demo_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+</div>
+<div id="deviance" class="section level2">
+<h2><span class="header-section-number">6.3</span> Deviance</h2>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" title="1">basic_model &lt;-<span class="st"> </span><span class="kw">glm</span>(total <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family =</span> poisson, <span class="dt">data =</span> data_HH)</a>
+<a class="sourceLine" id="cb94-2" title="2">deviance_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">anova</span>(basic_model, result_<span class="dv">1</span>, <span class="dt">test =</span> <span class="st">&quot;Chisq&quot;</span>)</a>
+<a class="sourceLine" id="cb94-3" title="3">deviance_<span class="dv">1</span></a></code></pre></div>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: total ~ 1
+## Model 2: total ~ age
+##   Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+## 1      1499     2362.5                          
+## 2      1498     2337.1  1   25.399 4.661e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="overdispersion-using-another-example" class="section level2">
+<h2><span class="header-section-number">6.4</span> Overdispersion (using another example)</h2>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1">data_edu&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/proback/BeyondMLR/master/data/c_data.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb96-2" title="2"><span class="kw">head</span>(data_edu)</a></code></pre></div>
+<pre><code>##   Enrollment type nv     nvrate enroll1000 region
+## 1       5590    U 30 5.36672630      5.590     SE
+## 2        540    C  0 0.00000000      0.540     SE
+## 3      35747    U 23 0.64341064     35.747      W
+## 4      28176    C  1 0.03549120     28.176      W
+## 5      10568    U  1 0.09462528     10.568     SW
+## 6       3127    U  0 0.00000000      3.127     SW</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1"><span class="kw">hist</span>(data_edu<span class="op">$</span>nv)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" title="1">results_<span class="dv">3</span>&lt;-<span class="st"> </span><span class="kw">glm</span>(nv <span class="op">~</span><span class="st"> </span>type <span class="op">+</span><span class="st"> </span>region, <span class="dt">family =</span> poisson,</a>
+<a class="sourceLine" id="cb99-2" title="2">               <span class="dt">offset =</span> <span class="kw">log</span>(enroll1000), <span class="dt">data =</span> data_edu)</a>
+<a class="sourceLine" id="cb99-3" title="3"><span class="kw">summary</span>(results_<span class="dv">3</span>)</a></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = nv ~ type + region, family = poisson, data = data_edu, 
+##     offset = log(enroll1000))
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -4.5697  -1.9079  -0.7233   0.8738   8.4564  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.60161    0.17120  -9.355  &lt; 2e-16 ***
+## typeU        0.34011    0.13234   2.570  0.01017 *  
+## regionMW     0.09942    0.17752   0.560  0.57547    
+## regionNE     0.78109    0.15305   5.103 3.33e-07 ***
+## regionSE     0.87668    0.15314   5.725 1.04e-08 ***
+## regionSW     0.50251    0.18508   2.715  0.00663 ** 
+## regionW      0.27324    0.18741   1.458  0.14484    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 491.00  on 80  degrees of freedom
+## Residual deviance: 426.01  on 74  degrees of freedom
+## AIC: 657.89
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1">results_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">glm</span>(nv <span class="op">~</span><span class="st"> </span>type <span class="op">+</span><span class="st"> </span>region, <span class="dt">family =</span> quasipoisson,</a>
+<a class="sourceLine" id="cb101-2" title="2">               <span class="dt">offset =</span> <span class="kw">log</span>(enroll1000), <span class="dt">data =</span> data_edu)</a>
+<a class="sourceLine" id="cb101-3" title="3">difference_dev &lt;-<span class="st"> </span><span class="kw">anova</span>(results_<span class="dv">4</span>, results_<span class="dv">3</span>, <span class="dt">test =</span> <span class="st">&quot;F&quot;</span>)</a>
+<a class="sourceLine" id="cb101-4" title="4">difference_dev</a></code></pre></div>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: nv ~ type + region
+## Model 2: nv ~ type + region
+##   Resid. Df Resid. Dev Df Deviance F Pr(&gt;F)
+## 1        74     426.01                     
+## 2        74     426.01  0        0</code></pre>
 </div>
 </div>
             </section>

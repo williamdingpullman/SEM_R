@@ -29,4 +29,6 @@
 \contentsline {chapter}{\numberline {6}Poisson Regression}{31}{chapter.6}% 
 \contentsline {section}{\numberline {6.1}Basic idea}{31}{section.6.1}% 
 \contentsline {section}{\numberline {6.2}Trying to understand}{34}{section.6.2}% 
-\contentsline {chapter}{\numberline {7}Use R for mediation}{37}{chapter.7}% 
+\contentsline {section}{\numberline {6.3}Deviance}{39}{section.6.3}% 
+\contentsline {section}{\numberline {6.4}Overdispersion (using another example)}{39}{section.6.4}% 
+\contentsline {chapter}{\numberline {7}Use R for mediation}{43}{chapter.7}% 
