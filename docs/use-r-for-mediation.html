@@ -24,7 +24,7 @@
 <meta name="author" content="Bill" />
 
 
-<meta name="date" content="2021-05-05" />
+<meta name="date" content="2021-05-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,7 +169,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3" data-path="poisson-regression.html"><a href="poisson-regression.html#deviance"><i class="fa fa-check"></i><b>6.3</b> Deviance</a></li>
 <li class="chapter" data-level="6.4" data-path="poisson-regression.html"><a href="poisson-regression.html#overdispersion-using-another-example"><i class="fa fa-check"></i><b>6.4</b> Overdispersion (using another example)</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="use-r-for-mediation.html"><a href="use-r-for-mediation.html"><i class="fa fa-check"></i><b>7</b> Use R for mediation</a></li>
+<li class="chapter" data-level="7" data-path="use-r-for-mediation.html"><a href="use-r-for-mediation.html"><i class="fa fa-check"></i><b>7</b> Use R for mediation</a><ul>
+<li class="chapter" data-level="7.1" data-path="use-r-for-mediation.html"><a href="use-r-for-mediation.html#normal-distribution-case"><i class="fa fa-check"></i><b>7.1</b> Normal Distribution Case</a></li>
+<li class="chapter" data-level="7.2" data-path="use-r-for-mediation.html"><a href="use-r-for-mediation.html#poisson-distribution-case"><i class="fa fa-check"></i><b>7.2</b> Poisson Distribution Case</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://williamdingpullman.github.io/" target="blank">Bill's State Notes</a></li>
 
@@ -192,9 +195,156 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="use-r-for-mediation" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Use R for mediation</h1>
-<p><a href="https://advstats.psychstat.org/book/mediation/index.php" class="uri">https://advstats.psychstat.org/book/mediation/index.php</a>
-<a href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html" class="uri">https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html</a></p>
+<p>References:</p>
+<p><a href="https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html" class="uri">https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html</a></p>
+<p><a href="https://advstats.psychstat.org/book/mediation/index.php" class="uri">https://advstats.psychstat.org/book/mediation/index.php</a></p>
+<div id="normal-distribution-case" class="section level2">
+<h2><span class="header-section-number">7.1</span> Normal Distribution Case</h2>
+<p>The following code generates the data to be used in the mediation model. Based on the histogram, we can see that it follows Poisson distribution.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" title="1"><span class="co"># Generate data for mediation analysis</span></a>
+<a class="sourceLine" id="cb105-2" title="2"><span class="co"># https://ademos.people.uic.edu/Chapter14.html</span></a>
+<a class="sourceLine" id="cb105-3" title="3"></a>
+<a class="sourceLine" id="cb105-4" title="4"><span class="co"># Generate Possion data</span></a>
+<a class="sourceLine" id="cb105-5" title="5"><span class="co"># https://stats.stackexchange.com/questions/27443/generate-data-samples-from-poisson-regression</span></a>
+<a class="sourceLine" id="cb105-6" title="6"></a>
+<a class="sourceLine" id="cb105-7" title="7"><span class="kw">set.seed</span>(<span class="dv">123</span>) </a>
+<a class="sourceLine" id="cb105-8" title="8">N &lt;-<span class="st"> </span><span class="dv">200</span> </a>
+<a class="sourceLine" id="cb105-9" title="9">X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(N, <span class="dv">1</span>, <span class="dv">1</span>)   </a>
+<a class="sourceLine" id="cb105-10" title="10">M &lt;-<span class="st"> </span><span class="fl">0.6</span><span class="op">*</span>X <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(N, <span class="dv">0</span>, <span class="dv">1</span>) </a>
+<a class="sourceLine" id="cb105-11" title="11">mu &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.2</span><span class="op">*</span>X<span class="fl">+0.8</span><span class="op">*</span>M ) </a>
+<a class="sourceLine" id="cb105-12" title="12">Y &lt;-<span class="st"> </span><span class="kw">rpois</span>(<span class="dt">n=</span>N, <span class="dt">lambda=</span>mu)</a>
+<a class="sourceLine" id="cb105-13" title="13"></a>
+<a class="sourceLine" id="cb105-14" title="14">Test_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(X, M, Y)</a>
+<a class="sourceLine" id="cb105-15" title="15"></a>
+<a class="sourceLine" id="cb105-16" title="16"><span class="kw">head</span>(Test_data)</a></code></pre></div>
+<pre><code>##           X         M Y
+## 1 0.4395244 2.4625250 7
+## 2 0.7698225 1.7743065 4
+## 3 2.5587083 1.2700799 2
+## 4 1.0705084 1.1854991 1
+## 5 1.1292877 0.2632327 1
+## 6 2.7150650 1.1527921 9</code></pre>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" title="1"><span class="kw">hist</span>(Test_data<span class="op">$</span>Y)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" title="1"><span class="co"># write.csv(Test_data,&quot;Test_data.csv&quot;)</span></a></code></pre></div>
+<p>Next, while in reality it follows Poisson distribution, the following assumes normal distribution. You will find the results are consistent with PROCESS.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" title="1">Normal_Mediation&lt;-<span class="cf">function</span>(X, M, Y, data_used, <span class="dt">resampling_size=</span><span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb109-2" title="2"></a>
+<a class="sourceLine" id="cb109-3" title="3">  {</a>
+<a class="sourceLine" id="cb109-4" title="4"></a>
+<a class="sourceLine" id="cb109-5" title="5">  result =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, resampling_size)</a>
+<a class="sourceLine" id="cb109-6" title="6">  n_row =<span class="st"> </span><span class="kw">nrow</span>(data_used)</a>
+<a class="sourceLine" id="cb109-7" title="7">  </a>
+<a class="sourceLine" id="cb109-8" title="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>resampling_size)</a>
+<a class="sourceLine" id="cb109-9" title="9">  {</a>
+<a class="sourceLine" id="cb109-10" title="10">  boot.sample =<span class="st"> </span><span class="kw">sample</span>(n_row, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb109-11" title="11">  data_temp&lt;-data_used[boot.sample,]</a>
+<a class="sourceLine" id="cb109-12" title="12">  </a>
+<a class="sourceLine" id="cb109-13" title="13">  <span class="co"># a path</span></a>
+<a class="sourceLine" id="cb109-14" title="14">  result_a_temp&lt;-<span class="kw">lm</span>(M<span class="op">~</span>X, <span class="dt">data =</span> data_temp)<span class="op">$</span>coefficients</a>
+<a class="sourceLine" id="cb109-15" title="15">  <span class="kw">names</span>(result_a_temp) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb109-16" title="16">  a_<span class="dv">0</span>_temp&lt;-result_a_temp[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb109-17" title="17">  a_<span class="dv">1</span>_temp&lt;-result_a_temp[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb109-18" title="18">  </a>
+<a class="sourceLine" id="cb109-19" title="19">  <span class="co"># b path</span></a>
+<a class="sourceLine" id="cb109-20" title="20">  result_b_temp&lt;-<span class="kw">lm</span>(Y<span class="op">~</span>M<span class="op">+</span>X, <span class="dt">data =</span> data_temp)<span class="op">$</span>coefficients</a>
+<a class="sourceLine" id="cb109-21" title="21">  <span class="kw">names</span>(result_b_temp) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb109-22" title="22">  b_<span class="dv">0</span>_temp&lt;-result_b_temp[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb109-23" title="23">  b_<span class="dv">1</span>_temp&lt;-result_b_temp[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb109-24" title="24">  c_<span class="dv">1</span>_apostrophe_temp&lt;-result_b_temp[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb109-25" title="25">  </a>
+<a class="sourceLine" id="cb109-26" title="26">  <span class="co">#calculating the indirect effect</span></a>
+<a class="sourceLine" id="cb109-27" title="27">  indirect_temp&lt;-a_<span class="dv">1</span>_temp<span class="op">*</span>b_<span class="dv">1</span>_temp</a>
+<a class="sourceLine" id="cb109-28" title="28">  result[i]=indirect_temp</a>
+<a class="sourceLine" id="cb109-29" title="29">  }</a>
+<a class="sourceLine" id="cb109-30" title="30"></a>
+<a class="sourceLine" id="cb109-31" title="31">  <span class="kw">hist</span>(result)</a>
+<a class="sourceLine" id="cb109-32" title="32">  <span class="kw">sd</span>(result)</a>
+<a class="sourceLine" id="cb109-33" title="33"></a>
+<a class="sourceLine" id="cb109-34" title="34">  <span class="kw">print</span>(<span class="kw">mean</span>(result) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(result))</a>
+<a class="sourceLine" id="cb109-35" title="35">   <span class="kw">print</span>(<span class="kw">quantile</span>(result,<span class="kw">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>)))</a>
+<a class="sourceLine" id="cb109-36" title="36"></a>
+<a class="sourceLine" id="cb109-37" title="37">}</a>
+<a class="sourceLine" id="cb109-38" title="38"></a>
+<a class="sourceLine" id="cb109-39" title="39"><span class="kw">Normal_Mediation</span>(<span class="dt">X=</span>X, <span class="dt">M=</span>M,<span class="dt">Y=</span>Y, <span class="dt">data_used =</span> Test_data,<span class="dt">resampling_size=</span><span class="dv">5000</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre><code>## [1] 0.9502475 2.4221161
+##     2.5%    97.5% 
+## 1.021319 2.453762</code></pre>
+</div>
+<div id="poisson-distribution-case" class="section level2">
+<h2><span class="header-section-number">7.2</span> Poisson Distribution Case</h2>
+<p>However, the problem is that the DV is count data. So, it is better to take that into consideration. The following is based on the paper of Geldhof 2017, Accommodating binary and count variables in mediation, A case for conditional indirect effects.</p>
+<p>In particular,</p>
+<p>Poisson regression uses the log link. For the b path function, it is as follows.</p>
+<p><span class="math display">\[log(Y)=e^{b_0+b_1M+c^{&#39;}X}\]</span></p>
+<p>Thus, its first partial derivative again M is as follows.</p>
+<p><span class="math display">\[b_1e^{b_0+b_1M+c^{&#39;}X}\]</span>
+Where,</p>
+<p><span class="math display">\[M=a_0+a_1X\]</span></p>
+<p>Thus, the indirect effect is as follows.</p>
+<p><span class="math display">\[IndirectEffect = a_1b_1e^{b_0+b_1M+c^{&#39;}X}=a_1b_1e^{b_0+b_1(a_0+a_1X)+c^{&#39;}X}\]</span></p>
+<p>As we can see the indirect effect is not a constant, as it depends on X. Different X values will lead to different indirect effects. Thus, you can see the following R code takes this into consideration.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" title="1"><span class="co"># x_predetermined = 0 : X = Mean</span></a>
+<a class="sourceLine" id="cb111-2" title="2"><span class="co"># x_predetermined = 1 : X = Mean + SD</span></a>
+<a class="sourceLine" id="cb111-3" title="3"><span class="co"># x_predetermined = -1 : X = Mean - SD</span></a>
+<a class="sourceLine" id="cb111-4" title="4"></a>
+<a class="sourceLine" id="cb111-5" title="5">Poisson_Mediation&lt;-<span class="cf">function</span>(X, M, Y, data_used, <span class="dt">x_predetermined=</span><span class="dv">0</span>, <span class="dt">resampling_size=</span><span class="dv">5000</span>) </a>
+<a class="sourceLine" id="cb111-6" title="6">{</a>
+<a class="sourceLine" id="cb111-7" title="7">  </a>
+<a class="sourceLine" id="cb111-8" title="8">    result =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, resampling_size)</a>
+<a class="sourceLine" id="cb111-9" title="9">    n_row =<span class="st"> </span><span class="kw">nrow</span>(data_used)</a>
+<a class="sourceLine" id="cb111-10" title="10">    </a>
+<a class="sourceLine" id="cb111-11" title="11">    </a>
+<a class="sourceLine" id="cb111-12" title="12">    <span class="cf">if</span>(x_predetermined<span class="op">==</span><span class="dv">0</span>){x_predetermined=<span class="kw">mean</span>(data_used<span class="op">$</span>X)}</a>
+<a class="sourceLine" id="cb111-13" title="13">    <span class="cf">else</span> <span class="cf">if</span> (x_predetermined<span class="op">==-</span><span class="dv">1</span>){x_predetermined=<span class="kw">mean</span>(data_used<span class="op">$</span>X)<span class="op">-</span><span class="kw">sd</span>(data_used<span class="op">$</span>X)}</a>
+<a class="sourceLine" id="cb111-14" title="14">    <span class="cf">else</span>(<span class="dt">x_predetermined=</span><span class="kw">mean</span>(data_used<span class="op">$</span>X)<span class="op">+</span><span class="kw">sd</span>(data_used<span class="op">$</span>X))</a>
+<a class="sourceLine" id="cb111-15" title="15"></a>
+<a class="sourceLine" id="cb111-16" title="16"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>resampling_size)</a>
+<a class="sourceLine" id="cb111-17" title="17">{</a>
+<a class="sourceLine" id="cb111-18" title="18">  boot.sample =<span class="st"> </span><span class="kw">sample</span>(n_row, <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb111-19" title="19">  data_temp&lt;-data_used[boot.sample,]</a>
+<a class="sourceLine" id="cb111-20" title="20">  </a>
+<a class="sourceLine" id="cb111-21" title="21">  <span class="co"># a path</span></a>
+<a class="sourceLine" id="cb111-22" title="22">  result_a_temp&lt;-<span class="kw">lm</span>(M<span class="op">~</span>X, <span class="dt">data =</span> data_temp)<span class="op">$</span>coefficients</a>
+<a class="sourceLine" id="cb111-23" title="23">  <span class="kw">names</span>(result_a_temp) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb111-24" title="24">  a_<span class="dv">0</span>_temp&lt;-result_a_temp[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb111-25" title="25">  a_<span class="dv">1</span>_temp&lt;-result_a_temp[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb111-26" title="26">  </a>
+<a class="sourceLine" id="cb111-27" title="27">  <span class="co"># b path</span></a>
+<a class="sourceLine" id="cb111-28" title="28">  result_b_temp&lt;-<span class="kw">glm</span>(Y<span class="op">~</span>M<span class="op">+</span>X, <span class="dt">data =</span> data_temp, <span class="dt">family =</span> quasipoisson)<span class="op">$</span>coefficients</a>
+<a class="sourceLine" id="cb111-29" title="29">  <span class="kw">names</span>(result_b_temp) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb111-30" title="30">  b_<span class="dv">0</span>_temp&lt;-result_b_temp[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb111-31" title="31">  b_<span class="dv">1</span>_temp&lt;-result_b_temp[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb111-32" title="32">  c_<span class="dv">1</span>_apostrophe_temp&lt;-result_b_temp[<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb111-33" title="33">  </a>
+<a class="sourceLine" id="cb111-34" title="34">  <span class="co">#calculating the indirect effect</span></a>
+<a class="sourceLine" id="cb111-35" title="35">  </a>
+<a class="sourceLine" id="cb111-36" title="36">  M_estimated_temp=a_<span class="dv">0</span>_temp<span class="op">+</span>a_<span class="dv">1</span>_temp<span class="op">*</span>x_predetermined</a>
+<a class="sourceLine" id="cb111-37" title="37">  indirect_temp&lt;-a_<span class="dv">1</span>_temp<span class="op">*</span>b_<span class="dv">1</span>_temp<span class="op">*</span><span class="kw">exp</span>(b_<span class="dv">0</span>_temp<span class="op">+</span>b_<span class="dv">1</span>_temp<span class="op">*</span>M_estimated_temp<span class="op">+</span>c_<span class="dv">1</span>_apostrophe_temp<span class="op">*</span>x_predetermined)</a>
+<a class="sourceLine" id="cb111-38" title="38">  result[i]=indirect_temp</a>
+<a class="sourceLine" id="cb111-39" title="39">}</a>
+<a class="sourceLine" id="cb111-40" title="40"><span class="kw">hist</span>(result)</a>
+<a class="sourceLine" id="cb111-41" title="41"><span class="kw">quantile</span>(result,<span class="kw">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb111-42" title="42">}</a>
+<a class="sourceLine" id="cb111-43" title="43"></a>
+<a class="sourceLine" id="cb111-44" title="44"><span class="co"># X = Mean</span></a>
+<a class="sourceLine" id="cb111-45" title="45"><span class="kw">Poisson_Mediation</span>(<span class="dt">X=</span>X, <span class="dt">M=</span>M,<span class="dt">Y=</span>Y, <span class="dt">data_used =</span> Test_data,<span class="dt">x_predetermined=</span><span class="dv">0</span>,<span class="dt">resampling_size=</span><span class="dv">5000</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<pre><code>##      2.5%     97.5% 
+## 0.6432712 1.2018952</code></pre>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1"><span class="co"># X = Mean - 1 SD</span></a>
+<a class="sourceLine" id="cb113-2" title="2"><span class="kw">Poisson_Mediation</span>(<span class="dt">X=</span>X, <span class="dt">M=</span>M,<span class="dt">Y=</span>Y, <span class="dt">data_used =</span> Test_data,<span class="dt">x_predetermined=</span><span class="op">-</span><span class="dv">1</span>,<span class="dt">resampling_size=</span><span class="dv">5000</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
+<pre><code>##      2.5%     97.5% 
+## 0.3773349 0.6186202</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" title="1"><span class="co"># X = Mean + 1 SD</span></a>
+<a class="sourceLine" id="cb115-2" title="2"><span class="kw">Poisson_Mediation</span>(<span class="dt">X=</span>X, <span class="dt">M=</span>M,<span class="dt">Y=</span>Y, <span class="dt">data_used =</span> Test_data,<span class="dt">x_predetermined=</span><span class="dv">1</span>,<span class="dt">resampling_size=</span><span class="dv">5000</span>)</a></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-34-3.png" width="672" /></p>
+<pre><code>##     2.5%    97.5% 
+## 1.073396 2.435226</code></pre>
 
+</div>
 </div>
             </section>
 
